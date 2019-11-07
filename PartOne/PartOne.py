@@ -131,7 +131,24 @@ def main():
 		#if we want to be more efficiency, not dealing with the column not in REAL and LONG type
 		#TODO: find a way to not go those column
 
+	#Part one question with data type ---- 2 ---- get the maximum value and minumum value in DATE type
 
+
+	#Part one question with data type ---- 3 ---- get the top 5 shortest value and top 5 longest value and average value length in TEXT type
+
+	for i in range(len(header)):
+		column_data_for_text = lines_without_header.map(lambda x: (data_with_type(x[i]),1)).filter(lambda x: x[0][1] == 'TEXT' and x[0][0] != "No Data")
+		text_data_with_length = column_data_for_text.map(lambda x:(x[0][0],len(x[0][0].strip())))
+		#print(text_data_with_length)
+		# fot the top 5 value, we need to distinct to get the distinct value
+		# otherwise you will get 10 ELEMENT for many times
+		#TODO: question is there are some space in data, but also count in
+		top_longest_length = text_data_with_length.sortBy(lambda x: x[1], False).distinct().take(5)
+		top_shortest_length = text_data_with_length.sortBy(lambda x: x[1], True).distinct().take(5)
+		print("the top shortest length data is: " + '\t' + str(top_shortest_length))
+		print("the top longest length data is: " + '\t' + str(top_longest_length))
+
+		
 
 
 main()
