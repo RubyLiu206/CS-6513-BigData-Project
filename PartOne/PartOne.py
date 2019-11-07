@@ -44,8 +44,12 @@ def data_with_type(data):
 	type_ = data_type(data)
 	return data,type_
 
+#method to test whether this RDD is empty
+#we can also use the rdd.partitions.isEmpty()
+#but that method may not work for some situation, like the initial block rdd is already divided
+def test_empty_RDD(RDD):
+	return RDD.count() != 0
 
-  
 
 def main():
 	# some initialization 
@@ -111,42 +115,69 @@ def main():
 
 
 	#Part oneL question with data type ---- 1 ---- get the max and min from datatype long and real
-	for i in range(len(header)):
-		column_data_for_int = lines_without_header.map(lambda x: (data_with_type(x[i]),1)).filter(lambda x: x[0][1] == 'INT' or x[0][1] == 'FLOAT')
-		max_data_int_long = column_data_for_int.sortBy(lambda x: x[0][0], False).take(1)
-		min_data_int_long = column_data_for_int.sortBy(lambda x: x[0][0], True).take(1)
-		print("the max data in this column with data type int and long" + '\t' + str(max_data_int_long))
-		print("the min data in this column with data type int and long" + '\t' + str(min_data_int_long))
+	for i in range(len(header)):	
 		
-		#to compute the mean and std
-		#the method is trans to the numpy for each column
-		#but not efficiency
-		#TODO;find spark way to do that, or using the sql
-		mean_data_int_long = column_data_for_int.map(lambda x: x[0][0]).collect()
-		mean_data_int_long = np.array(mean_data_int_long).astype('float')
-		mean_value = np.mean(mean_data_int_long)
-		print("the mean of this column data is :" +'\t' + str(mean_value))
-		std = np.std(mean_data_int_long)
-		print("the std of this column data is :" +'\t' + str(std))
-		#if we want to be more efficiency, not dealing with the column not in REAL and LONG type
-		#TODO: find a way to not go those column
+		column_data_for_int = lines_without_header.map(lambda x: (data_with_type(x[i]),1)).filter(lambda x: x[0][1] == 'INT' or x[0][1] == 'FLOAT')
+		
+		if test_empty_RDD(column_data_for_int):
+			max_data_int_long = column_data_for_int.sortBy(lambda x: x[0][0], False).take(1)
+			min_data_int_long = column_data_for_int.sortBy(lambda x: x[0][0], True).take(1)
+			print("the max data in this column with data type int and long" + '\t' + str(max_data_int_long))
+			print("the min data in this column with data type int and long" + '\t' + str(min_data_int_long))
+		
+			#to compute the mean and std
+			#the method is trans to the numpy for the column which contains INT FLOAT type data
+			#TODO;find spark way to do that, or using the sql
+			mean_data_int_long = column_data_for_int.map(lambda x: x[0][0]).collect()
+			mean_data_int_long = np.array(mean_data_int_long).astype('float')
+			mean_value = np.mean(mean_data_int_long)
+			print("the mean of this column data is :" +'\t' + str(mean_value))
+			std = np.std(mean_data_int_long)
+			print("the std of this column data is :" +'\t' + str(std))
+			#if we want to be more efficiency, not dealing with the column not in REAL and LONG type
+			#TODO: find a way to not go those column
 
 	#Part one question with data type ---- 2 ---- get the maximum value and minumum value in DATE type
+	#TODO:  test this one!! 
+	for i in range(len(header)):
+		
+		column_data_for_datetime = lines_without_header.map(lambda x: data_with_type(x[i])).filter(lambda x:x[1] == 'DATETIME')
+		
+		if test_empty_RDD(column_data_for_datetime):	
+			max_date_time = column_data_for_datetime.map(lambda x: x.strip('/')).sortBy(lambda x: x[2],False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[0], False).take(1)
+			min_date_time = column_data_for_datetime.map(lambda x: x.strip('/')).sortBy(lambda x: x[2], False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[1], False).take(1)
+			print("the max datetime is:" + '\t' + str(max_date_time))
+			print("the min datetime is:" + '\t' + str(min_date_time))
 
 
 	#Part one question with data type ---- 3 ---- get the top 5 shortest value and top 5 longest value and average value length in TEXT type
 
 	for i in range(len(header)):
+		
 		column_data_for_text = lines_without_header.map(lambda x: (data_with_type(x[i]),1)).filter(lambda x: x[0][1] == 'TEXT' and x[0][0] != "No Data")
-		text_data_with_length = column_data_for_text.map(lambda x:(x[0][0],len(x[0][0].strip())))
-		#print(text_data_with_length)
-		# fot the top 5 value, we need to distinct to get the distinct value
-		# otherwise you will get 10 ELEMENT for many times
-		#TODO: question is there are some space in data, but also count in
-		top_longest_length = text_data_with_length.sortBy(lambda x: x[1], False).distinct().take(5)
-		top_shortest_length = text_data_with_length.sortBy(lambda x: x[1], True).distinct().take(5)
-		print("the top shortest length data is: " + '\t' + str(top_shortest_length))
-		print("the top longest length data is: " + '\t' + str(top_longest_length))
+		
+		if test_empty_RDD(column_data_for_text):
+			text_data_with_length = column_data_for_text.map(lambda x:(x[0][0],len(x[0][0].strip())))
+			#print(text_data_with_length)
+			# fot the top 5 value, we need to distinct to get the distinct value
+			# otherwise you will get 10 ELEMENT for many times
+			#TODO: question is there are some space in data, but also count in
+			top_longest_length = text_data_with_length.sortBy(lambda x: x[1], False).distinct().take(5)
+			top_shortest_length = text_data_with_length.sortBy(lambda x: x[1], True).distinct().take(5)
+			print("the top shortest length data is: " + '\t' + str(top_shortest_length))
+			print("the top longest length data is: " + '\t' + str(top_longest_length))
+			#average value length
+			#or the same method with int data type, not sure which one is better
+			length = text_data_with_length.map(lambda x: (x[1],1)).reduceByKey(lambda x,y: x+y).map(lambda x: (x[0]*x[1],x[1])).collect()
+			length = np.array(length)
+			sum_ = 0
+			count = 0
+			for i in length:
+				sum_ += i[0]
+				count += i[1]
+			if count != 0:	
+				print("the average length of text data:" + '\t' + str(sum_/count))
+
 
 		
 
