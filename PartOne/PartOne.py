@@ -51,6 +51,21 @@ def test_empty_RDD(RDD):
 	return RDD.count() != 0
 
 
+def get_file_path():
+
+	cmd = "hdfs dfs -ls /user/hm7/NYCOpenData"
+	files = subprocess.Popen('hdfs dfs -ls /user/hm74/NYCOpenData' , stdout = subprocess.PIPE, stderr = subprocess.STDOUT, shell = True)
+	count = 0
+	final_file_name = []
+
+	for line in files.stdout.readlines():
+		line = str(line).strip().split()
+		final_file_name.append(line[-1].strip())
+		count += 1
+	#test
+	print(final_file_name[1])
+
+
 def main():
 	# some initialization 
 	sc = SparkContext()
@@ -60,7 +75,13 @@ def main():
 	# need change, after testing pass
 	file_path = sys.argv[1]    
 	lines = sc.textFile(file_path,1)
-	
+	#TODO: according to the instor, we need to automatic go through all gz file in the path
+	#file PatrOne get all file path already get from get_file_path function
+	#need to using in here
+
+
+
+
 	#get the number of rows this ds has 
 	print("there are " + '\t' + str(lines.count()) + "lines in the file")
 	#split all lines with \t
@@ -135,7 +156,7 @@ def main():
 			std = np.std(mean_data_int_long)
 			print("the std of this column data is :" +'\t' + str(std))
 			#if we want to be more efficiency, not dealing with the column not in REAL and LONG type
-			#TODO: find a way to not go those column
+			#TODO: find a way to not go those column --- done
 
 	#Part one question with data type ---- 2 ---- get the maximum value and minumum value in DATE type
 	#TODO:  test this one!! 
@@ -161,7 +182,7 @@ def main():
 			#print(text_data_with_length)
 			# fot the top 5 value, we need to distinct to get the distinct value
 			# otherwise you will get 10 ELEMENT for many times
-			#TODO: question is there are some space in data, but also count in
+			#TODO: question is there are some space in data, but also count in --- done
 			top_longest_length = text_data_with_length.sortBy(lambda x: x[1], False).distinct().take(5)
 			top_shortest_length = text_data_with_length.sortBy(lambda x: x[1], True).distinct().take(5)
 			print("the top shortest length data is: " + '\t' + str(top_shortest_length))
@@ -178,6 +199,7 @@ def main():
 			if count != 0:	
 				print("the average length of text data:" + '\t' + str(sum_/count))
 
+	#TODO: write into json file
 
 		
 
