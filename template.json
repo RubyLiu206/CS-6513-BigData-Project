@@ -152,6 +152,7 @@
                     "average_length": ""
                 }
             ]
-        },
-    ]
+        }
+    ],
+    "key_column_candidates": ""
 }
