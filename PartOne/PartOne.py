@@ -10,28 +10,13 @@ from csv import reader
 import re
 from pyspark.sql import SQLContext
 
-
-#find empty data
-def count_empty(data):
-#input is column
-	count = 0
-	for i in range(len(data)):
-		if data[i] is None or data[i] =='No Data':
-			count += 1
-	return count
-
-#find the number of distinct data
-def find_distinct(data):
-	distinct_data = set(data)
-	return len(distinct_data)
-
 #identify the data type
 def data_type(data):
 	if re.match("^\d+?\.\d+?$", data) is not None:
-	    return "FLOAT"
+	    return "REAL"
 	# not sure if the REAL is same with int
 	elif re.match("^\s*-?[0-9]{1,10}\s*$", data) is not None: 
-	    return "REAL"
+	    return "INTEGER"
 	elif re.match('^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9]):([0-5]?[0-9])$', data) is not None or re.match('[0-9]{2}/[0-9]{2}/[0-9]{4}', data) is not None:
 	    return "DateTime"
 	else:
@@ -65,7 +50,7 @@ def get_file_path():
 	#test
 	print(final_file_name[1])
 
-
+# use vxxs-iyt2.tsv.gz as our test
 def main():
 	# some initialization 
 	sc = SparkContext()
@@ -73,17 +58,15 @@ def main():
 	
 	# get the input gz file
 	# need change, after testing pass
-	file_path = sys.argv[1]    
+	file_path = sys.argv[1]    # file path is single file name
 	lines = sc.textFile(file_path,1)
 	#TODO: according to the instor, we need to automatic go through all gz file in the path
 	#file PatrOne get all file path already get from get_file_path function
 	#need to using in here
 
 
-
-
 	#get the number of rows this ds has 
-	print("there are " + '\t' + str(lines.count()) + "lines in the file")
+	print("There are ", lines.count(), " lines in the file")
 	#split all lines with \t
 	#need test, because we don't know whether all the gz file have the same format with the gz we testing 
 	lines = lines.map(lambda x: x.split('\t'))
@@ -95,45 +78,33 @@ def main():
 	# modify the dataset without the header row
 	lines_without_header = lines.filter(lambda line: line != header)
 
-
+	# go through every column
 	for i in range(len(header)):
-		#each column data
-		column_data = lines_without_header.map(lambda x:x[i]).collect()
-		#if you want to test the result of this line
-		#print(line_data.take(5))
 		
-		#Part one: question 2 --- count the empty column, 
-		number_empty = count_empty(column_data)
-		#Part one: question 1 --- count the non empty column,
-		#the method we use is the total row minus the empty row, which will be more efficiency
-		number_non_empty = len(column_data)-number_empty
-		print("number of empyt data"+ '\t'+str(number_empty))
-		print("number of non empty data" + '\t' + str(number_non_empty))
-	
-		#Part one: question 3 --- number of distinct number
-		number_distinct =lines_without_header.map(lambda x : (x[i], 1)).reduceByKey(lambda x,y : x+y).collect()
-		#Part one: question 4 --- the most 5 frequency items in each column
-		#the method we use is the same with the homework
-		number_frequency = lines_without_header.map(lambda x:(x[i],1)).reduceByKey(lambda x,y: x+y).sortBy(lambda x: x[1], False).take(5)
-		#another way to find distinct
-		#result = find_distinct(column_data)
-		#print("number of distinct" + '\t'+str(result))
-		print("using spark, number of distinct" + '\t' + str(len(number_distinct)))
-		
-		five_freq = []	
-		#TODO: try to find a more efficiency way to get the five freq,
-		#in this method, we need to initial a list to store
-		for i in range(len(number_frequency)):
-			five_freq.append(number_frequency[i][0])
-		print("the top five frequency" + '\t' + str(five_freq)) 
+		#Part one: question 2 --- count the empty column:
+		number_empty = lines_without_header.map(lambda x : x[i]).filter(lambda x : x is None or x =='No Data').count()
+		#Part one: question 1 --- count the non empty column:
+		number_non_empty = lines_without_header.map(lambda x : x[i]).count() - number_empty
 
+		print("Number of non-empty cells: ", number_non_empty)
+		print("Number of empyt-cells: ", number_empty)
+				
+		#Part one: question 3 --- number of distinct number
+		number_distinct = lines_without_header.map(lambda x : (x[i], 1)).reduceByKey(lambda x,y : x+y).count()
+		print("Number of distinct values: ", number_distinct)
+
+		#Part one: question 4 --- the most 5 frequency items in each column
+		top_five_freq = []
+		number_frequency = lines_without_header.map(lambda x : (x[i], 1)).reduceByKey(lambda x,y : x+y).sortBy(lambda x: x[1], False).take(5)
+		for i in range(len(number_frequency)):
+			top_five_freq.append(number_frequency[i][0])
+		print("Top-5 most frequent values: ", top_five_freq) 
 
 	#Part one: question 5 --- get the data type
 	#TODO: we need to count the different data type(actually done with this part, but need test)
 	for i in range(len(header)):
 		find_data_type = lines_without_header.map(lambda x:(data_type(x[i]),1)).reduceByKey(lambda x,y:	x+y).collect()
 		print("the data type in this column is :" + '\t' + str(find_data_type)) 
-
 
 	#Part oneL question with data type ---- 1 ---- get the max and min from datatype long and real
 	for i in range(len(header)):	
