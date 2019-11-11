@@ -9,7 +9,7 @@ from pyspark import SparkConf, SparkContext
 from csv import reader
 import re
 from pyspark.sql import SQLContext
-
+#import matplotlib.pyplot as plt
 
 #find empty data
 def count_empty(data):
@@ -28,12 +28,12 @@ def find_distinct(data):
 #identify the data type
 def data_type(data):
 	if re.match("^\d+?\.\d+?$", data) is not None:
-	    return "FLOAT"
+	    return "REAL"
 	# not sure if the REAL is same with int
 	elif re.match("^\s*-?[0-9]{1,10}\s*$", data) is not None: 
-	    return "REAL"
+	    return "INTEGER"
 	elif re.match('^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9]):([0-5]?[0-9])$', data) is not None or re.match('[0-9]{2}/[0-9]{2}/[0-9]{4}', data) is not None:
-	    return "DateTime"
+	    return "DATETIME"
 	else:
 	    return "TEXT"
 	 
@@ -64,7 +64,10 @@ def get_file_path():
 		count += 1
 	#test
 	print(final_file_name[1])
-
+def plot_non_empty_empty(empty, non_empty):
+	name = ['empty data', 'non empty data']
+	number = [empty, non_empty]
+	plt.bar(name,number, align = 'center', aplha = 0.5)
 
 def main():
 	# some initialization 
@@ -95,8 +98,11 @@ def main():
 	# modify the dataset without the header row
 	lines_without_header = lines.filter(lambda line: line != header)
 
-
+	basic_information = []
+	unique_value_each_column = []
+	basic_column_information = []
 	for i in range(len(header)):
+		
 		#each column data
 		column_data = lines_without_header.map(lambda x:x[i]).collect()
 		#if you want to test the result of this line
@@ -109,6 +115,8 @@ def main():
 		number_non_empty = len(column_data)-number_empty
 		print("number of empyt data"+ '\t'+str(number_empty))
 		print("number of non empty data" + '\t' + str(number_non_empty))
+		#plot_non_empty_empty(number_empty, number_non_empty)
+
 	
 		#Part one: question 3 --- number of distinct number
 		number_distinct =lines_without_header.map(lambda x : (x[i], 1)).reduceByKey(lambda x,y : x+y).collect()
@@ -119,47 +127,58 @@ def main():
 		#result = find_distinct(column_data)
 		#print("number of distinct" + '\t'+str(result))
 		print("using spark, number of distinct" + '\t' + str(len(number_distinct)))
-		
+
+		unique_value_each_column.append(len(number_distinct))
+
 		five_freq = []	
 		#TODO: try to find a more efficiency way to get the five freq,
 		#in this method, we need to initial a list to store
 		for i in range(len(number_frequency)):
 			five_freq.append(number_frequency[i][0])
 		print("the top five frequency" + '\t' + str(five_freq)) 
+		basic_column_information.append([{"column_name":str(header[i]), "number_non_empty_cells":int(number_non_empty), "number_empty_cells": int(number_empty), "number_distinct_values":int(len(number_distinct)), "frequent_values": five_freq}])
 
+	most_unique_column = max(np.array(unique_value_each_column))
+	index_key_column = unique_value_each_column.index(most_unique_column)
 
+	basic_information.append([{"file_name" : str(sys.argv[1]),"column" : basic_column_information, "key_column": str(header[index_key_column])}])
+	print(basic_information)  
+	
 	#Part one: question 5 --- get the data type
 	#TODO: we need to count the different data type(actually done with this part, but need test)
 	for i in range(len(header)):
 		find_data_type = lines_without_header.map(lambda x:(data_type(x[i]),1)).reduceByKey(lambda x,y:	x+y).collect()
 		print("the data type in this column is :" + '\t' + str(find_data_type)) 
 
-
+	INT_result = []
 	#Part oneL question with data type ---- 1 ---- get the max and min from datatype long and real
 	for i in range(len(header)):	
 		
-		column_data_for_int = lines_without_header.map(lambda x: (data_with_type(x[i]),1)).filter(lambda x: x[0][1] == 'INT' or x[0][1] == 'FLOAT')
-		
+		column_data_for_int = lines_without_header.map(lambda x: (data_with_type(x[i]),1)).filter(lambda x: x[0][1] == 'INTEGER' or x[0][1] == 'REAL')
+	
 		if test_empty_RDD(column_data_for_int):
-			max_data_int_long = column_data_for_int.sortBy(lambda x: x[0][0], False).take(1)
-			min_data_int_long = column_data_for_int.sortBy(lambda x: x[0][0], True).take(1)
-			print("the max data in this column with data type int and long" + '\t' + str(max_data_int_long))
-			print("the min data in this column with data type int and long" + '\t' + str(min_data_int_long))
-		
+			max_data_int_long = column_data_for_int.sortBy(lambda x: x[0][0], False).map(lambda x: x[0][0]).take(1)
+			min_data_int_long = column_data_for_int.sortBy(lambda x: x[0][0], True).map(lambda x: x[0][0]).take(1)
+			print("the max data in the:" + '\t' + str(i) +'\t' + "column with data type int and long" + '\t' + str(max_data_int_long))
+			print("the min data in the:" + '\t' + str(i) + '\t' + " column with data type int and long" + '\t' + str(min_data_int_long))
+			
 			#to compute the mean and std
 			#the method is trans to the numpy for the column which contains INT FLOAT type data
 			#TODO;find spark way to do that, or using the sql
 			mean_data_int_long = column_data_for_int.map(lambda x: x[0][0]).collect()
 			mean_data_int_long = np.array(mean_data_int_long).astype('float')
 			mean_value = np.mean(mean_data_int_long)
-			print("the mean of this column data is :" +'\t' + str(mean_value))
+			print("the mean of the:" + '\t'+ str(i) + '\t' + " column data is :" +'\t' + str(mean_value))
 			std = np.std(mean_data_int_long)
-			print("the std of this column data is :" +'\t' + str(std))
+			print("the std of the : " + '\t' + str(i) + " column data is :" +'\t' + str(std))
 			#if we want to be more efficiency, not dealing with the column not in REAL and LONG type
 			#TODO: find a way to not go those column --- done
+			INT_result.append([i, max_data_int_long, min_data_int_long, mean_value, std])
+	#print(INT_result)
 
 	#Part one question with data type ---- 2 ---- get the maximum value and minumum value in DATE type
 	#TODO:  test this one!! 
+	DATE_result = []
 	for i in range(len(header)):
 		
 		column_data_for_datetime = lines_without_header.map(lambda x: data_with_type(x[i])).filter(lambda x:x[1] == 'DATETIME')
@@ -167,14 +186,15 @@ def main():
 		if test_empty_RDD(column_data_for_datetime):	
 			max_date_time = column_data_for_datetime.map(lambda x: x.strip('/')).sortBy(lambda x: x[2],False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[0], False).take(1)
 			min_date_time = column_data_for_datetime.map(lambda x: x.strip('/')).sortBy(lambda x: x[2], False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[1], False).take(1)
-			print("the max datetime is:" + '\t' + str(max_date_time))
-			print("the min datetime is:" + '\t' + str(min_date_time))
-
-
+			print("the max datetime in " + '\t' + str(i) + '\t' + " column is:" + '\t' + str(max_date_time))
+			print("the min datetime in:" + '\t' + str(i) + '\t' + "column is:" + '\t' + str(min_date_time))
+			DATE_result.append([i, max_date_time, min_date_time])
+	#print(DATE_result)
 	#Part one question with data type ---- 3 ---- get the top 5 shortest value and top 5 longest value and average value length in TEXT type
-
+	
+	TEXT_result = []
 	for i in range(len(header)):
-		
+	
 		column_data_for_text = lines_without_header.map(lambda x: (data_with_type(x[i]),1)).filter(lambda x: x[0][1] == 'TEXT' and x[0][0] != "No Data")
 		
 		if test_empty_RDD(column_data_for_text):
@@ -185,8 +205,8 @@ def main():
 			#TODO: question is there are some space in data, but also count in --- done
 			top_longest_length = text_data_with_length.sortBy(lambda x: x[1], False).distinct().take(5)
 			top_shortest_length = text_data_with_length.sortBy(lambda x: x[1], True).distinct().take(5)
-			print("the top shortest length data is: " + '\t' + str(top_shortest_length))
-			print("the top longest length data is: " + '\t' + str(top_longest_length))
+			print("the top shortest length data in " + '\t' + str(i) + "column is: " + '\t' + str(top_shortest_length))
+			print("the top longest length data in: " + '\t' + str(i) + "column is: " + '\t' + str(top_longest_length))
 			#average value length
 			#or the same method with int data type, not sure which one is better
 			length = text_data_with_length.map(lambda x: (x[1],1)).reduceByKey(lambda x,y: x+y).map(lambda x: (x[0]*x[1],x[1])).collect()
@@ -197,11 +217,11 @@ def main():
 				sum_ += i[0]
 				count += i[1]
 			if count != 0:	
-				print("the average length of text data:" + '\t' + str(sum_/count))
-
+				print("the average length of text data in:" + '\t' + str(i) + "column is:" + str(sum_/count))
+				TEXT_result.append([i, top_shortest_length, top_longest_length, sum_/count])
 	#TODO: write into json file
 
-		
+	#print(TEXT_result)
 
 
 main()
