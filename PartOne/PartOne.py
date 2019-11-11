@@ -56,10 +56,9 @@ def profile_single_file(sc, file):
 
 	basic_information = []
 	num_unique_value = []
-	basic_column_information = []
+	column_information = []
 	# go through every column
 	for i in range(len(header)):
-
 		#Part one: question 2 --- count the empty column:
 		number_empty = lines_without_header.map(lambda x : x[i]).filter(lambda x : x is None or x =='No Data').count()
 		#Part one: question 1 --- count the non empty column:
@@ -78,19 +77,13 @@ def profile_single_file(sc, file):
 		for i in range(len(number_frequency)):
 			top_five_freq.append(number_frequency[i][0])
 		print("Top-5 most frequent values: ", top_five_freq) 
+		column_information.append([{"column_name":str(header[i]), "number_non_empty_cells":int(number_non_empty), "number_empty_cells": int(number_empty), "number_distinct_values":int(number_distinct), "frequent_values": top_five_freq}])
 
-		five_freq = []	
-		#TODO: try to find a more efficiency way to get the five freq,
-		#in this method, we need to initial a list to store
-		for i in range(len(number_frequency)):
-			five_freq.append(number_frequency[i][0])
-		print("the top five frequency" + '\t' + str(five_freq)) 
-		basic_column_information.append([{"column_name":str(header[i]), "number_non_empty_cells":int(number_non_empty), "number_empty_cells": int(number_empty), "number_distinct_values":int(len(number_distinct)), "frequent_values": five_freq}])
-
+	# extra credit
 	most_unique_column = max(np.array(num_unique_value))
 	index_key_column = num_unique_value.index(most_unique_column)
 
-	basic_information.append([{"file_name" : str(sys.argv[1]),"column" : basic_column_information, "key_column": str(header[index_key_column])}])
+	basic_information.append([{"file_name" : str(sys.argv[1]),"column" : column_information, "key_column": str(header[index_key_column])}])
 	print(basic_information)  
 	
 	#Part one: question 5 --- get the data type
