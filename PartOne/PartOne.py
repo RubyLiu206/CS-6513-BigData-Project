@@ -26,10 +26,6 @@ def data_with_type(data):
     return data, type_
 
 
-def test_empty_RDD(RDD):
-    return RDD.count() != 0
-
-
 def get_file_path():
     cmd = "hdfs dfs -ls /user/hm7/NYCOpenData"
     files = subprocess.Popen('hdfs dfs -ls /user/hm74/NYCOpenData',
@@ -47,12 +43,12 @@ def profile_single_file(sc, file):
     lines = sc.textFile(file, 1)
 
     # get the number of rows this dataset has
-    print("There are ", lines.count(), " lines in the file")
+    # print("There are ", lines.count(), " lines in the file")
     # split all lines with \t
     lines = lines.map(lambda x: x.split('\t'))
     # get the header which is the column name
     header = lines.first()
-    print("the column name are: ", header)
+    # print("the column name are: ", header)
 
     # modify the dataset without the header row
     lines_without_header = lines.filter(lambda line: line != header)
@@ -61,20 +57,20 @@ def profile_single_file(sc, file):
     columns_information = []
     # go through every column
     for i in range(len(header)):
-        print("\nCurrent Column: ", header[i])
+        #print("\nCurrent Column: ", header[i])
         # Part one: question 2 --- count the empty column:
         number_empty = lines_without_header.map(lambda x: x[i]).filter(
             lambda x: x is None or x == 'No Data').count()
         # Part one: question 1 --- count the non empty column:
         number_non_empty = lines_without_header.map(
             lambda x: x[i]).count() - number_empty
-        print("Number of non-empty cells: ", number_non_empty)
-        print("Number of empty-cells: ", number_empty)
+        #print("Number of non-empty cells: ", number_non_empty)
+        #print("Number of empty-cells: ", number_empty)
 
         # Part one: question 3 --- number of distinct number
         number_distinct = lines_without_header.map(
             lambda x: (x[i], 1)).reduceByKey(lambda x, y: x+y).count()
-        print("Number of distinct values: ", number_distinct)
+        #print("Number of distinct values: ", number_distinct)
         num_unique_value.append(number_distinct)
 
         # Part one: question 4 --- the most 5 frequency items in each column
@@ -83,16 +79,36 @@ def profile_single_file(sc, file):
             lambda x, y: x+y).sortBy(lambda x: x[1], False).take(5)
         for j in range(len(number_frequency)):
             top_five_freq.append(number_frequency[j][0].strip())
-        print("Top-5 most frequent values: ", top_five_freq)
+        #print("Top-5 most frequent values: ", top_five_freq)
 
         # Part one: question 5 --- get the data type
-        find_data_type = lines_without_header.map(lambda x: (
-            get_type(x[i]), 1)).reduceByKey(lambda x, y: x+y).collect()
-        print("The data type in this column is :", find_data_type)
-
         data_type = []
-        for pair in find_data_type:
-            data_type.append({"type": pair[0], "count": pair[1]})
+        column_data_types = lines_without_header.map(
+            lambda x: (data_with_type(x[i]), 1))
+
+        column_data_if_int = column_data_types.filter(
+            lambda x: x[1] == 'INTEGER (LONG)')
+        column_data_if_real = column_data_types.filter(
+            lambda x: x[1] == 'REAL')
+        column_data_if_datetime = column_data_types.filter(
+            lambda x: x[1] == 'DATE/TIME')
+        column_data_if_text = column_data_types.filter(
+            lambda x: x[1] == 'TEXT')
+
+        if column_data_if_int.count() != 0:
+            column_data = column_data_if_int.map(lambda x: x[0])
+            # max and min
+            max_value = column_data.sortBy(lambda x: x, False).take(1)
+            min_value = column_data.sortBy(lambda x: x, True).take(1)
+            # average and std
+            column_data = np.array(column_data.collect()).astype('float')
+            mean_value = np.mean(column_data)
+            std = np.std(column_data)
+            data_type.append({"type": "INTEGER (LONG)", "count": len(column_data), "max_value": max_value,
+                              "min_value": min_value, "mean": mean_value, "stddev": std})
+
+        # for pair in find_data_type:
+        #     data_type.append({"type": pair[0], "count": pair[1]})
 
         columns_information.append({"column_name": header[i], "number_non_empty_cells": number_non_empty, "number_empty_cells":
                                     number_empty, "number_distinct_values": number_distinct, "frequent_values": top_five_freq, "data_type": data_type})
@@ -108,41 +124,6 @@ def profile_single_file(sc, file):
                          "key_column_candidates": key_column_candidates}
     with open('result.json', 'w') as fp:
         json.dump(basic_information, fp)
-
-    # INT_result = []
-    # # Part oneL question with data type ---- 1 ---- get the max and min from datatype long and real
-    # for i in range(len(header)):
-
-    #     column_data_for_int = lines_without_header.map(lambda x: (data_with_type(
-    #         x[i]), 1)).filter(lambda x: x[0][1] == 'INTEGER' or x[0][1] == 'REAL')
-
-    #     if test_empty_RDD(column_data_for_int):
-    #         max_data_int_long = column_data_for_int.sortBy(
-    #             lambda x: x[0][0], False).map(lambda x: x[0][0]).take(1)
-    #         min_data_int_long = column_data_for_int.sortBy(
-    #             lambda x: x[0][0], True).map(lambda x: x[0][0]).take(1)
-    #         print("the max data in the:" + '\t' + str(i) + '\t' +
-    #               "column with data type int and long" + '\t' + str(max_data_int_long))
-    #         print("the min data in the:" + '\t' + str(i) + '\t' +
-    #               " column with data type int and long" + '\t' + str(min_data_int_long))
-
-    #         # to compute the mean and std
-    #         # the method is trans to the numpy for the column which contains INT FLOAT type data
-    #         # TODO;find spark way to do that, or using the sql
-    #         mean_data_int_long = column_data_for_int.map(
-    #             lambda x: x[0][0]).collect()
-    #         mean_data_int_long = np.array(mean_data_int_long).astype('float')
-    #         mean_value = np.mean(mean_data_int_long)
-    #         print("the mean of the:" + '\t' + str(i) + '\t' +
-    #               " column data is :" + '\t' + str(mean_value))
-    #         std = np.std(mean_data_int_long)
-    #         print("the std of the : " + '\t' + str(i) +
-    #               " column data is :" + '\t' + str(std))
-    #         # if we want to be more efficiency, not dealing with the column not in REAL and LONG type
-    #         # TODO: find a way to not go those column --- done
-    #         INT_result.append(
-    #             [i, max_data_int_long, min_data_int_long, mean_value, std])
-    # # print(INT_result)
 
     # # Part one question with data type ---- 2 ---- get the maximum value and minumum value in DATE type
     # # TODO:  test this one!!
