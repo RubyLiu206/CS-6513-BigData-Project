@@ -1,14 +1,9 @@
 import sys
 import subprocess
 import numpy as np
-import pandas as pd
-import itertools
-from math import sqrt
-from operator import add
-from os.path import join, isfile, dirname
-from pyspark import SparkConf, SparkContext
-from csv import reader
+import json
 import re
+from pyspark import SparkContext
 from pyspark.sql import SQLContext
 
 # identify the data type
@@ -86,8 +81,8 @@ def profile_single_file(sc, file):
         top_five_freq = []
         number_frequency = lines_without_header.map(lambda x: (x[i], 1)).reduceByKey(
             lambda x, y: x+y).sortBy(lambda x: x[1], False).take(5)
-        for i in range(len(number_frequency)):
-            top_five_freq.append(number_frequency[i][0].strip())
+        for j in range(len(number_frequency)):
+            top_five_freq.append(number_frequency[j][0].strip())
         print("Top-5 most frequent values: ", top_five_freq)
 
         # Part one: question 5 --- get the data type
@@ -99,11 +94,8 @@ def profile_single_file(sc, file):
         for pair in find_data_type:
             data_type.append({"type": pair[0], "count": pair[1]})
 
-        columns_information.append({"column_name": str(header[i]), "number_non_empty_cells": int(number_non_empty), "number_empty_cells": int(
-            number_empty), "number_distinct_values": int(number_distinct), "frequent_values": top_five_freq, "data_type": data_type})
-
-    basic_information = {"columns": columns_information}
-    print("Basic information: ", basic_information)
+        columns_information.append({"column_name": header[i], "number_non_empty_cells": number_non_empty, "number_empty_cells":
+                                    number_empty, "number_distinct_values": number_distinct, "frequent_values": top_five_freq, "data_type": data_type})
 
     # extra credit
     # should be distinct value == number of lines
@@ -111,7 +103,11 @@ def profile_single_file(sc, file):
     for i in range(len(header)):
         if num_unique_value[i] == lines_without_header.count():
             key_column_candidates.append(header[i])
-    print("Candidate keys: ", key_column_candidates)
+
+    basic_information = {"dataset_name": file, "columns": columns_information,
+                         "key_column_candidates": key_column_candidates}
+    with open('result.json', 'w') as fp:
+        json.dump(basic_information, fp)
 
     # INT_result = []
     # # Part oneL question with data type ---- 1 ---- get the max and min from datatype long and real

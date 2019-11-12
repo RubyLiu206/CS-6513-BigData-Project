@@ -1,0 +1,240 @@
+{
+    "dataset_name": "/user/hm74/NYCOpenData/vxxs-iyt2.tsv.gz",
+    "columns": [
+        {
+            "column_name": "DBN",
+            "number_non_empty_cells": 1644,
+            "number_empty_cells": 0,
+            "number_distinct_values": 1644,
+            "frequent_values": [
+                "01M015",
+                "01M019",
+                "01M020",
+                "01M034",
+                "01M063"
+            ],
+            "data_type": [
+                {
+                    "type": "TEXT",
+                    "count": 1644
+                }
+            ]
+        },
+        {
+            "column_name": "Location",
+            "number_non_empty_cells": 1644,
+            "number_empty_cells": 0,
+            "number_distinct_values": 1644,
+            "frequent_values": [
+                "01M015 - P.S. 015 ROBERTO CLEMENTE",
+                "01M019 - P.S. 019 ASHER LEVY",
+                "01M020 - P.S. 020 ANNA SILVER",
+                "01M034 - P.S. 034 FRANKLIN D. ROOSEVELT",
+                "01M063 - THE STAR ACADEMY - P.S.63"
+            ],
+            "data_type": [
+                {
+                    "type": "TEXT",
+                    "count": 1644
+                }
+            ]
+        },
+        {
+            "column_name": "Location Type",
+            "number_non_empty_cells": 1644,
+            "number_empty_cells": 0,
+            "number_distinct_values": 15,
+            "frequent_values": [
+                "ELEMENTARY",
+                "HIGH SCHOOL",
+                "JUNIOR HIGH-INTERMEDIATE-MIDDLE",
+                "K-8",
+                "SECONDARY SCHOOL"
+            ],
+            "data_type": [
+                {
+                    "type": "TEXT",
+                    "count": 1644
+                }
+            ]
+        },
+        {
+            "column_name": "Total SW & GC",
+            "number_non_empty_cells": 1643,
+            "number_empty_cells": 1,
+            "number_distinct_values": 73,
+            "frequent_values": [
+                "2",
+                "1",
+                "3",
+                "4",
+                "5"
+            ],
+            "data_type": [
+                {
+                    "type": "INTEGER (LONG)",
+                    "count": 1400
+                },
+                {
+                    "type": "REAL",
+                    "count": 243
+                },
+                {
+                    "type": "TEXT",
+                    "count": 1
+                }
+            ]
+        },
+        {
+            "column_name": "Total SW",
+            "number_non_empty_cells": 922,
+            "number_empty_cells": 722,
+            "number_distinct_values": 32,
+            "frequent_values": [
+                "No Data",
+                "1",
+                "2",
+                "0",
+                "3"
+            ],
+            "data_type": [
+                {
+                    "type": "TEXT",
+                    "count": 722
+                },
+                {
+                    "type": "INTEGER (LONG)",
+                    "count": 877
+                },
+                {
+                    "type": "REAL",
+                    "count": 45
+                }
+            ]
+        },
+        {
+            "column_name": "Full Time",
+            "number_non_empty_cells": 846,
+            "number_empty_cells": 798,
+            "number_distinct_values": 10,
+            "frequent_values": [
+                "No Data",
+                "1",
+                "2",
+                "3",
+                "4"
+            ],
+            "data_type": [
+                {
+                    "type": "TEXT",
+                    "count": 798
+                },
+                {
+                    "type": "INTEGER (LONG)",
+                    "count": 846
+                }
+            ]
+        },
+        {
+            "column_name": "Part Time",
+            "number_non_empty_cells": 48,
+            "number_empty_cells": 1596,
+            "number_distinct_values": 12,
+            "frequent_values": [
+                "No Data",
+                "0.2",
+                "0.4",
+                "0.6",
+                "0.5"
+            ],
+            "data_type": [
+                {
+                    "type": "TEXT",
+                    "count": 1596
+                },
+                {
+                    "type": "REAL",
+                    "count": 45
+                },
+                {
+                    "type": "INTEGER (LONG)",
+                    "count": 3
+                }
+            ]
+        },
+        {
+            "column_name": "Bilingual",
+            "number_non_empty_cells": 243,
+            "number_empty_cells": 1401,
+            "number_distinct_values": 8,
+            "frequent_values": [
+                "No Data",
+                "1",
+                "2",
+                "0.4",
+                "0.6"
+            ],
+            "data_type": [
+                {
+                    "type": "TEXT",
+                    "count": 1401
+                },
+                {
+                    "type": "INTEGER (LONG)",
+                    "count": 238
+                },
+                {
+                    "type": "REAL",
+                    "count": 5
+                }
+            ]
+        },
+        {
+            "column_name": "Serving more than one location",
+            "number_non_empty_cells": 22,
+            "number_empty_cells": 1622,
+            "number_distinct_values": 10,
+            "frequent_values": [
+                "No Data",
+                "0.2",
+                "0.5",
+                "0.4",
+                "0.6"
+            ],
+            "data_type": [
+                {
+                    "type": "TEXT",
+                    "count": 1622
+                },
+                {
+                    "type": "REAL",
+                    "count": 22
+                }
+            ]
+        },
+        {
+            "column_name": "ATR",
+            "number_non_empty_cells": 1,
+            "number_empty_cells": 1643,
+            "number_distinct_values": 2,
+            "frequent_values": [
+                "No Data",
+                "1"
+            ],
+            "data_type": [
+                {
+                    "type": "TEXT",
+                    "count": 1643
+                },
+                {
+                    "type": "INTEGER (LONG)",
+                    "count": 1
+                }
+            ]
+        }
+    ],
+    "key_column_candidates": [
+        "DBN",
+        "Location"
+    ]
+}
