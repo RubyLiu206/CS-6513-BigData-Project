@@ -9,6 +9,7 @@ from pyspark import SparkConf, SparkContext
 from csv import reader
 import re
 from pyspark.sql import SQLContext
+import json
 #import matplotlib.pyplot as plt
 
 #find empty data
@@ -69,31 +70,28 @@ def plot_non_empty_empty(empty, non_empty):
 	number = [empty, non_empty]
 	plt.bar(name,number, align = 'center', aplha = 0.5)
 
-def main():
-	# some initialization 
-	sc = SparkContext()
-	sqlContext = SQLContext(sc)
-	
-	# get the input gz file
-	# need change, after testing pass
-	file_path = sys.argv[1]    
+
+def write_into_json(list_, json_file_name, json_file_save_path):
+	#json_data = json.dumps(list_)
+	#os.chdir(json_file_save_path)
+	with open(json_file_name, 'w') as f:
+		json.dumps(list_)
+		json.dump(list_,f,separators=(',', ':'))
+
+def profile_single_file(sc, file_path):
+
+
 	lines = sc.textFile(file_path,1)
-	#TODO: according to the instor, we need to automatic go through all gz file in the path
-	#file PatrOne get all file path already get from get_file_path function
-	#need to using in here
 
-
-
-
-	#get the number of rows this ds has 
+	# get the number of rows this dataset has 
 	print("there are " + '\t' + str(lines.count()) + "lines in the file")
+
 	#split all lines with \t
-	#need test, because we don't know whether all the gz file have the same format with the gz we testing 
 	lines = lines.map(lambda x: x.split('\t'))
 	#get the header which is the column name
 	header = lines.first()
 
-	print("the column name are: " + '\t' + str(header))
+	print("the column name are: ",str(header))
 
 	# modify the dataset without the header row
 	lines_without_header = lines.filter(lambda line: line != header)
@@ -102,7 +100,6 @@ def main():
 	unique_value_each_column = []
 	basic_column_information = []
 	for i in range(len(header)):
-		
 		#each column data
 		column_data = lines_without_header.map(lambda x:x[i]).collect()
 		#if you want to test the result of this line
@@ -133,17 +130,19 @@ def main():
 		five_freq = []	
 		#TODO: try to find a more efficiency way to get the five freq,
 		#in this method, we need to initial a list to store
-		for i in range(len(number_frequency)):
-			five_freq.append(number_frequency[i][0])
-		print("the top five frequency" + '\t' + str(five_freq)) 
-		basic_column_information.append([{"column_name":str(header[i]), "number_non_empty_cells":int(number_non_empty), "number_empty_cells": int(number_empty), "number_distinct_values":int(len(number_distinct)), "frequent_values": five_freq}])
-
+		for j in range(len(number_frequency)):
+			five_freq.append(number_frequency[j][0])
+		#print("the top five frequency" + '\t' + str(five_freq)) 
+		
+		basic_column_information.append([{"column_name": header[i], "number_non_empty_cells":int(number_non_empty), "number_empty_cells": int(number_empty), "number_distinct_values":int(len(number_distinct)), "frequent_values": five_freq}])
+	
 	most_unique_column = max(np.array(unique_value_each_column))
 	index_key_column = unique_value_each_column.index(most_unique_column)
 
-	basic_information.append([{"file_name" : str(sys.argv[1]),"column" : basic_column_information, "key_column": str(header[index_key_column])}])
+	basic_information = {"column" : basic_column_information}
 	print(basic_information)  
-	
+	write_into_json(basic_information, "test.json", "user/xl2590/home/Project")
+
 	#Part one: question 5 --- get the data type
 	#TODO: we need to count the different data type(actually done with this part, but need test)
 	for i in range(len(header)):
@@ -224,4 +223,14 @@ def main():
 	#print(TEXT_result)
 
 
-main()
+
+
+
+
+
+sc = SparkContext()
+sqlContext = SQLContext(sc)
+profile_single_file(sc,"/user/hm74/NYCOpenData/vxxs-iyt2.tsv.gz")
+
+
+
