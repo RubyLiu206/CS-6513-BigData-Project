@@ -72,11 +72,21 @@ def plot_non_empty_empty(empty, non_empty):
 
 
 def write_into_json(list_, json_file_name, json_file_save_path):
-	#json_data = json.dumps(list_)
-	#os.chdir(json_file_save_path)
+	
 	with open(json_file_name, 'w') as f:
-		json.dumps(list_)
-		json.dump(list_,f,separators=(',', ':'))
+		#json.dumps(list_,indent=4, separators=(',', ': '))
+		json.dump(list_, f,indent=4, separators=(',', ': '))
+		
+def write_into_data(final_data, data, column_number):
+	final_data['column'][column_number]['data_type'] = data
+	return final_data
+	
+def read_from_json(json_file_name):
+
+	with open(json_file_name, 'r') as f:
+		data_infor = json.load(f) 
+	print(data_infor['column'][0])
+	return data_infor
 
 def profile_single_file(sc, file_path):
 
@@ -98,7 +108,7 @@ def profile_single_file(sc, file_path):
 
 	basic_information = []
 	unique_value_each_column = []
-	basic_column_information = []
+	basic_column_information = dict()
 	for i in range(len(header)):
 		#each column data
 		column_data = lines_without_header.map(lambda x:x[i]).collect()
@@ -134,14 +144,18 @@ def profile_single_file(sc, file_path):
 			five_freq.append(number_frequency[j][0])
 		#print("the top five frequency" + '\t' + str(five_freq)) 
 		
-		basic_column_information.append([{"column_name": header[i], "number_non_empty_cells":int(number_non_empty), "number_empty_cells": int(number_empty), "number_distinct_values":int(len(number_distinct)), "frequent_values": five_freq}])
-	
+		basic_column_information = {"column_name": header[i], "number_non_empty_cells":int(number_non_empty), "number_empty_cells": int(number_empty), "number_distinct_values":int(len(number_distinct)), "frequent_values": five_freq}
+		basic_information.append(basic_column_information)
 	most_unique_column = max(np.array(unique_value_each_column))
 	index_key_column = unique_value_each_column.index(most_unique_column)
 
-	basic_information = {"column" : basic_column_information}
+	basic_information = {"column" : basic_information}
 	print(basic_information)  
 	write_into_json(basic_information, "test.json", "user/xl2590/home/Project")
+	# for esch data type write into data_infor
+	data_infor = read_from_json("test.json")
+
+
 
 	#Part one: question 5 --- get the data type
 	#TODO: we need to count the different data type(actually done with this part, but need test)
@@ -149,12 +163,12 @@ def profile_single_file(sc, file_path):
 		find_data_type = lines_without_header.map(lambda x:(data_type(x[i]),1)).reduceByKey(lambda x,y:	x+y).collect()
 		print("the data type in this column is :" + '\t' + str(find_data_type)) 
 
-	INT_result = []
+	INT_result = dict()
 	#Part oneL question with data type ---- 1 ---- get the max and min from datatype long and real
 	for i in range(len(header)):	
 		
 		column_data_for_int = lines_without_header.map(lambda x: (data_with_type(x[i]),1)).filter(lambda x: x[0][1] == 'INTEGER' or x[0][1] == 'REAL')
-	
+		count = len(column_data_for_int.collect())
 		if test_empty_RDD(column_data_for_int):
 			max_data_int_long = column_data_for_int.sortBy(lambda x: x[0][0], False).map(lambda x: x[0][0]).take(1)
 			min_data_int_long = column_data_for_int.sortBy(lambda x: x[0][0], True).map(lambda x: x[0][0]).take(1)
@@ -172,30 +186,41 @@ def profile_single_file(sc, file_path):
 			print("the std of the : " + '\t' + str(i) + " column data is :" +'\t' + str(std))
 			#if we want to be more efficiency, not dealing with the column not in REAL and LONG type
 			#TODO: find a way to not go those column --- done
-			INT_result.append([i, max_data_int_long, min_data_int_long, mean_value, std])
+			INT_result = {"type":"INTEGER","count": count,  "max_value": max_data_int_long, "min_value": min_data_int_long,"mean": mean_value, "stddev":std}
 	#print(INT_result)
+			data_infor = write_into_data(data_infor, INT_result, i)
+	write_into_json(data_infor, "test.json","user/xl2590/home/Project")
+
+
+
 
 	#Part one question with data type ---- 2 ---- get the maximum value and minumum value in DATE type
 	#TODO:  test this one!! 
-	DATE_result = []
+	DATE_result = dict()
 	for i in range(len(header)):
 		
 		column_data_for_datetime = lines_without_header.map(lambda x: data_with_type(x[i])).filter(lambda x:x[1] == 'DATETIME')
-		
+		count = len(column_data_for_datetime.collect())
 		if test_empty_RDD(column_data_for_datetime):	
 			max_date_time = column_data_for_datetime.map(lambda x: x.strip('/')).sortBy(lambda x: x[2],False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[0], False).take(1)
 			min_date_time = column_data_for_datetime.map(lambda x: x.strip('/')).sortBy(lambda x: x[2], False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[1], False).take(1)
 			print("the max datetime in " + '\t' + str(i) + '\t' + " column is:" + '\t' + str(max_date_time))
 			print("the min datetime in:" + '\t' + str(i) + '\t' + "column is:" + '\t' + str(min_date_time))
-			DATE_result.append([i, max_date_time, min_date_time])
-	#print(DATE_result)
+			DATE_result = {"type": "DATE/TYPE", "count": count,"max_value": max_date_time, "min_value":min_date_time}
+
+			data_infor = write_into_data(data_infor, DATE_result, i)
+	write_into_json(data_infor, "test.json", "user/xl2590/home/Project")
+
+
+
 	#Part one question with data type ---- 3 ---- get the top 5 shortest value and top 5 longest value and average value length in TEXT type
 	
-	TEXT_result = []
+	TEXT_result = dict()
 	for i in range(len(header)):
 	
 		column_data_for_text = lines_without_header.map(lambda x: (data_with_type(x[i]),1)).filter(lambda x: x[0][1] == 'TEXT' and x[0][0] != "No Data")
-		
+		total_count = len(column_data_for_text.collect())
+
 		if test_empty_RDD(column_data_for_text):
 			text_data_with_length = column_data_for_text.map(lambda x:(x[0][0],len(x[0][0].strip())))
 			#print(text_data_with_length)
@@ -212,13 +237,15 @@ def profile_single_file(sc, file_path):
 			length = np.array(length)
 			sum_ = 0
 			count = 0
-			for i in length:
-				sum_ += i[0]
-				count += i[1]
+			for j in length:
+				sum_ += j[0]
+				count += j[1]
 			if count != 0:	
 				print("the average length of text data in:" + '\t' + str(i) + "column is:" + str(sum_/count))
-				TEXT_result.append([i, top_shortest_length, top_longest_length, sum_/count])
+				TEXT_result = {"type":"TEXT", " count" : total_count, "shortest_values": top_shortest_length, "longest_values": top_longest_length, "average_length": sum_/count}
 	#TODO: write into json file
+				data_infor = write_into_data(data_infor, TEXT_result, i)
+	write_into_json(data_infor,"test.json","user/xl2590/home/Project")
 
 	#print(TEXT_result)
 
