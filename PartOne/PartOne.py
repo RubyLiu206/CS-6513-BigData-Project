@@ -87,16 +87,16 @@ def profile_single_file(sc, file):
             lambda x: (data_with_type(x[i]), 1))
 
         column_data_if_int = column_data_types.filter(
-            lambda x: x[1] == 'INTEGER (LONG)')
+            lambda x: x[0][1] == "INTEGER (LONG)")
         column_data_if_real = column_data_types.filter(
-            lambda x: x[1] == 'REAL')
+            lambda x: x[0][1] == 'REAL')
         column_data_if_datetime = column_data_types.filter(
-            lambda x: x[1] == 'DATE/TIME')
+            lambda x: x[0][1] == 'DATE/TIME')
         column_data_if_text = column_data_types.filter(
-            lambda x: x[1] == 'TEXT')
+            lambda x: x[0][1] == 'TEXT'and x[0][0] != "No Data")
 
         if column_data_if_int.count() != 0:
-            column_data = column_data_if_int.map(lambda x: x[0])
+            column_data = column_data_if_int.map(lambda x: x[0][0])
             # max and min
             max_value = column_data.sortBy(lambda x: x, False).take(1)
             min_value = column_data.sortBy(lambda x: x, True).take(1)
@@ -104,11 +104,44 @@ def profile_single_file(sc, file):
             column_data = np.array(column_data.collect()).astype('float')
             mean_value = np.mean(column_data)
             std = np.std(column_data)
-            data_type.append({"type": "INTEGER (LONG)", "count": len(column_data), "max_value": max_value,
-                              "min_value": min_value, "mean": mean_value, "stddev": std})
+            data_type.append({"type": "INTEGER (LONG)", "count": len(column_data), "max_value": int(max_value[0]),
+                              "min_value": int(min_value[0]), "mean": mean_value, "stddev": std})
 
-        # for pair in find_data_type:
-        #     data_type.append({"type": pair[0], "count": pair[1]})
+        if column_data_if_real.count() != 0:
+            column_data = column_data_if_real.map(lambda x: x[0][0])
+            # max and min
+            max_value = column_data.sortBy(lambda x: x, False).take(1)
+            min_value = column_data.sortBy(lambda x: x, True).take(1)
+            # average and std
+            column_data = np.array(column_data.collect()).astype('float')
+            mean_value = np.mean(column_data)
+            std = np.std(column_data)
+            data_type.append({"type": "REAL", "count": len(column_data), "max_value": float(max_value[0]),
+                              "min_value": float(min_value[0]), "mean": mean_value, "stddev": std})
+
+        # if column_data_if_datetime.count() != 0:
+        #     column_data = column_data_if_datetime.map(lambda x: x[0][0])
+        #     max_date_time = column_data_if_datetime.map(lambda x: x.strip(
+        #         '/')).sortBy(lambda x: x[2], False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[0], False).take(1)
+        #     min_date_time = column_data_if_datetime.map(lambda x: x.strip(
+        #         '/')).sortBy(lambda x: x[2], False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[1], False).take(1)
+        #     data_type.append({"type": "DATE/TIME", "count": len(column_data), "max_value": str(max_value[0]),
+        #                       "min_value": str(min_value[0])})
+
+        if column_data_if_text.count() != 0:
+            # output striped text value
+            column_data_with_length = column_data_if_text.map(
+                lambda x: (x[0][0].strip(), len(x[0][0].strip())))
+            top_longest_length = column_data_with_length.sortBy(
+                lambda x: x[1], False).distinct().map(lambda x: x[0]).take(5)
+            top_shortest_length = column_data_with_length.sortBy(
+                lambda x: x[1], True).distinct().map(lambda x: x[0]).take(5)
+
+            length = np.array(column_data_with_length.map(
+                lambda x: x[1]).collect()).astype('float')
+            avg_length = np.mean(length)
+            data_type.append({"type": "TEXT", "count": len(
+                length), "shortest_value": top_shortest_length, "longest_value": top_longest_length, "average_length": avg_length})
 
         columns_information.append({"column_name": header[i], "number_non_empty_cells": number_non_empty, "number_empty_cells":
                                     number_empty, "number_distinct_values": number_distinct, "frequent_values": top_five_freq, "data_type": data_type})
@@ -124,68 +157,6 @@ def profile_single_file(sc, file):
                          "key_column_candidates": key_column_candidates}
     with open('result.json', 'w') as fp:
         json.dump(basic_information, fp)
-
-    # # Part one question with data type ---- 2 ---- get the maximum value and minumum value in DATE type
-    # # TODO:  test this one!!
-    # DATE_result = []
-    # for i in range(len(header)):
-
-    #     column_data_for_datetime = lines_without_header.map(
-    #         lambda x: data_with_type(x[i])).filter(lambda x: x[1] == 'DATETIME')
-
-    #     if test_empty_RDD(column_data_for_datetime):
-    #         max_date_time = column_data_for_datetime.map(lambda x: x.strip(
-    #             '/')).sortBy(lambda x: x[2], False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[0], False).take(1)
-    #         min_date_time = column_data_for_datetime.map(lambda x: x.strip(
-    #             '/')).sortBy(lambda x: x[2], False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[1], False).take(1)
-    #         print("the max datetime in " + '\t' + str(i) + '\t' +
-    #               " column is:" + '\t' + str(max_date_time))
-    #         print("the min datetime in:" + '\t' + str(i) +
-    #               '\t' + "column is:" + '\t' + str(min_date_time))
-    #         DATE_result.append([i, max_date_time, min_date_time])
-    # # print(DATE_result)
-    # # Part one question with data type ---- 3 ---- get the top 5 shortest value and top 5 longest value and average value length in TEXT type
-
-    # TEXT_result = []
-    # for i in range(len(header)):
-
-    #     column_data_for_text = lines_without_header.map(lambda x: (data_with_type(
-    #         x[i]), 1)).filter(lambda x: x[0][1] == 'TEXT' and x[0][0] != "No Data")
-
-    #     if test_empty_RDD(column_data_for_text):
-    #         text_data_with_length = column_data_for_text.map(
-    #             lambda x: (x[0][0], len(x[0][0].strip())))
-    #         # print(text_data_with_length)
-    #         # fot the top 5 value, we need to distinct to get the distinct value
-    #         # otherwise you will get 10 ELEMENT for many times
-    #         # TODO: question is there are some space in data, but also count in --- done
-    #         top_longest_length = text_data_with_length.sortBy(
-    #             lambda x: x[1], False).distinct().take(5)
-    #         top_shortest_length = text_data_with_length.sortBy(
-    #             lambda x: x[1], True).distinct().take(5)
-    #         print("the top shortest length data in " + '\t' + str(i) +
-    #               "column is: " + '\t' + str(top_shortest_length))
-    #         print("the top longest length data in: " + '\t' + str(i) +
-    #               "column is: " + '\t' + str(top_longest_length))
-    #         # average value length
-    #         # or the same method with int data type, not sure which one is better
-    #         length = text_data_with_length.map(lambda x: (x[1], 1)).reduceByKey(
-    #             lambda x, y: x+y).map(lambda x: (x[0]*x[1], x[1])).collect()
-    #         length = np.array(length)
-    #         sum_ = 0
-    #         count = 0
-    #         for i in length:
-    #             sum_ += i[0]
-    #             count += i[1]
-    #         if count != 0:
-    #             print("the average length of text data in:" +
-    #                   '\t' + str(i) + "column is:" + str(sum_/count))
-    #             TEXT_result.append(
-    #                 [i, top_shortest_length, top_longest_length, sum_/count])
-    # # TODO: write into json file
-
-    # # print(TEXT_result)
-
 
 # some initialization
 sc = SparkContext()
