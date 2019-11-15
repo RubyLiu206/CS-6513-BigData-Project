@@ -40,8 +40,6 @@ def sortDate(date):
 def profile_single_file(sc, file):
     lines = sc.textFile(file, 1)
 
-    # get the number of rows this dataset has
-    #print("There are ", lines.count(), " lines in the file")
     # split all lines with \t
     lines = lines.map(lambda x: x.split('\t'))
     # get the header which is the column name
@@ -51,8 +49,9 @@ def profile_single_file(sc, file):
     # modify the dataset without the header row
     lines_without_header = lines.filter(lambda line: line != header)
 
-    num_unique_value = []
     columns_information = []
+    key_column_candidates = []  # extra credit
+        
     # go through every column
     for i in range(len(header)):
         #print("\nCurrent Column: ", header[i])
@@ -69,7 +68,8 @@ def profile_single_file(sc, file):
         number_distinct = lines_without_header.map(
             lambda x: (x[i], 1)).reduceByKey(lambda x, y: x+y).count()
         #print("Number of distinct values: ", number_distinct)
-        num_unique_value.append(number_distinct)
+        if number_distinct == lines_without_header.count():
+            key_column_candidates.append(header[i])
 
         # Part one: question 4 --- the most 5 frequency items in each column
         top_five_freq = []
@@ -147,13 +147,6 @@ def profile_single_file(sc, file):
 
         columns_information.append({"column_name": header[i], "number_non_empty_cells": number_non_empty, "number_empty_cells":
                                     number_empty, "number_distinct_values": number_distinct, "frequent_values": top_five_freq, "data_type": data_type})
-
-    # extra credit
-    # should be distinct value == number of lines
-    key_column_candidates = []
-    for i in range(len(header)):
-        if num_unique_value[i] == lines_without_header.count():
-            key_column_candidates.append(header[i])
 
     basic_information = {"dataset_name": file, "columns": columns_information,
                          "key_column_candidates": key_column_candidates}
