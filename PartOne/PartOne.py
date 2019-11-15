@@ -1,10 +1,8 @@
 import sys
-import subprocess
 import numpy as np
 import json
 import re
 from pyspark import SparkContext
-from pyspark.sql import SQLContext
 
 # identify the data type
 # this needs to be tested
@@ -26,29 +24,29 @@ def data_with_type(data):
     return data, type_
 
 
-def get_file_path():
-    cmd = "hdfs dfs -ls /user/hm7/NYCOpenData"
-    files = subprocess.Popen('hdfs dfs -ls /user/hm74/NYCOpenData',
-                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-    count = 0
-    final_file_name = []
+def get_file_names(sc, path):
+    lines = sc.textFile(path+"datasets.tsv", 1)
+    file_names = lines.map(lambda x: x.split('\t')).map(
+        lambda x: path+x[0]+".tsv.gz").collect()
+    return file_names
 
-    for line in files.stdout.readlines():
-        line = str(line).strip().split()
-        final_file_name.append(line[-1].strip())
-        count += 1
+
+def sortDate(date):
+    # rewrite the string to yyyymmdd then let spark sort
+    date = date.split("/")
+    return date[2]+date[0]+date[1]
 
 
 def profile_single_file(sc, file):
     lines = sc.textFile(file, 1)
 
     # get the number of rows this dataset has
-    # print("There are ", lines.count(), " lines in the file")
+    #print("There are ", lines.count(), " lines in the file")
     # split all lines with \t
     lines = lines.map(lambda x: x.split('\t'))
     # get the header which is the column name
     header = lines.first()
-    # print("the column name are: ", header)
+    #print("the column name are: ", header)
 
     # modify the dataset without the header row
     lines_without_header = lines.filter(lambda line: line != header)
@@ -96,6 +94,7 @@ def profile_single_file(sc, file):
             lambda x: x[0][1] == 'TEXT'and x[0][0] != "No Data")
 
         if column_data_if_int.count() != 0:
+            #print("column data has int\n")
             column_data = column_data_if_int.map(lambda x: x[0][0])
             # max and min
             max_value = column_data.sortBy(lambda x: x, False).take(1)
@@ -108,6 +107,7 @@ def profile_single_file(sc, file):
                               "min_value": int(min_value[0]), "mean": mean_value, "stddev": std})
 
         if column_data_if_real.count() != 0:
+            #print("column data has real\n")
             column_data = column_data_if_real.map(lambda x: x[0][0])
             # max and min
             max_value = column_data.sortBy(lambda x: x, False).take(1)
@@ -119,16 +119,18 @@ def profile_single_file(sc, file):
             data_type.append({"type": "REAL", "count": len(column_data), "max_value": float(max_value[0]),
                               "min_value": float(min_value[0]), "mean": mean_value, "stddev": std})
 
-        # if column_data_if_datetime.count() != 0:
-        #     column_data = column_data_if_datetime.map(lambda x: x[0][0])
-        #     max_date_time = column_data_if_datetime.map(lambda x: x.strip(
-        #         '/')).sortBy(lambda x: x[2], False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[0], False).take(1)
-        #     min_date_time = column_data_if_datetime.map(lambda x: x.strip(
-        #         '/')).sortBy(lambda x: x[2], False).sortBy(lambda x: x[1], False).sortBy(lambda x: x[1], False).take(1)
-        #     data_type.append({"type": "DATE/TIME", "count": len(column_data), "max_value": str(max_value[0]),
-        #                       "min_value": str(min_value[0])})
+        if column_data_if_datetime.count() != 0:
+            #print("column data has datetime\n")
+            column_data = column_data_if_datetime.map(lambda x: x[0][0])
+            max_date_time = column_data.sortBy(
+                lambda x: sortDate(x), False).take(1)
+            min_date_time = column_data.sortBy(
+                lambda x: sortDate(x), True).take(1)
+            data_type.append({"type": "DATE/TIME", "count": column_data.count(), "max_value": max_date_time[0],
+                              "min_value": min_date_time[0]})
 
         if column_data_if_text.count() != 0:
+            #print("column data has string\n")
             # output striped text value
             column_data_with_length = column_data_if_text.map(
                 lambda x: (x[0][0].strip(), len(x[0][0].strip())))
@@ -158,7 +160,10 @@ def profile_single_file(sc, file):
     with open('result.json', 'w') as fp:
         json.dump(basic_information, fp)
 
-# some initialization
+
 sc = SparkContext()
-sqlContext = SQLContext(sc)
-profile_single_file(sc, "/user/hm74/NYCOpenData/vxxs-iyt2.tsv.gz")
+# file_names = get_file_names(sc, "/user/hm74/NYCOpenData/")
+# for file_name in file_names:
+#     profile_single_file(sc, file_name)
+# profile_single_file(sc, "/user/hm74/NYCOpenData/uvks-tn5n.tsv.gz")
+profile_single_file(sc, "/user/hm74/NYCOpenData/xagh-idmf.tsv.gz")
