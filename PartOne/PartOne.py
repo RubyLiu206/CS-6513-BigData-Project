@@ -51,7 +51,7 @@ def profile_single_file(sc, file):
 
     columns_information = []
     key_column_candidates = []  # extra credit
-        
+
     # go through every column
     for i in range(len(header)):
         #print("\nCurrent Column: ", header[i])
