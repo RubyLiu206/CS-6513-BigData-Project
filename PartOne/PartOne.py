@@ -2,10 +2,8 @@ import sys
 import numpy as np
 import json
 import re
+import csv
 from pyspark import SparkContext
-
-# identify the data type
-# this needs to be tested
 
 
 def get_type(data):
@@ -38,10 +36,11 @@ def sortDate(date):
 
 
 def profile_single_file(sc, file):
-    lines = sc.textFile(file, 1)
+    print("Current file is: ", file[23:])
 
-    # split all lines with \t
-    lines = lines.map(lambda x: x.split('\t'))
+    lines = sc.textFile(file, 1).mapPartitions(
+        lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+
     # get the header which is the column name
     header = lines.first()
     #print("the column name are: ", header)
@@ -54,26 +53,25 @@ def profile_single_file(sc, file):
 
     # go through every column
     for i in range(len(header)):
+        lines_mapped = lines_without_header.map(lambda x: (x[i], 1))
         #print("\nCurrent Column: ", header[i])
         # Part one: question 2 --- count the empty column:
-        number_empty = lines_without_header.map(lambda x: x[i]).filter(
-            lambda x: x is None or x == 'No Data').count()
+        number_empty = lines_mapped.filter(
+            lambda x: x[0] is None or x[0] == 'No Data').count()
         # Part one: question 1 --- count the non empty column:
-        number_non_empty = lines_without_header.map(
-            lambda x: x[i]).count() - number_empty
+        number_non_empty = lines_mapped.count() - number_empty
         #print("Number of non-empty cells: ", number_non_empty)
         #print("Number of empty-cells: ", number_empty)
 
         # Part one: question 3 --- number of distinct number
-        number_distinct = lines_without_header.map(
-            lambda x: (x[i], 1)).reduceByKey(lambda x, y: x+y).count()
+        number_distinct = lines_mapped.reduceByKey(lambda x, y: x+y).count()
         #print("Number of distinct values: ", number_distinct)
-        if number_distinct == lines_without_header.count():
+        if number_distinct == lines_mapped.count():
             key_column_candidates.append(header[i])
 
         # Part one: question 4 --- the most 5 frequency items in each column
         top_five_freq = []
-        number_frequency = lines_without_header.map(lambda x: (x[i], 1)).reduceByKey(
+        number_frequency = lines_mapped.reduceByKey(
             lambda x, y: x+y).sortBy(lambda x: x[1], False).take(5)
         for j in range(len(number_frequency)):
             top_five_freq.append(number_frequency[j][0].strip())
@@ -97,8 +95,9 @@ def profile_single_file(sc, file):
             #print("column data has int\n")
             column_data = column_data_if_int.map(lambda x: x[0][0])
             # max and min
-            max_value = column_data.sortBy(lambda x: x, False).take(1)
-            min_value = column_data.sortBy(lambda x: x, True).take(1)
+            max_value = column_data.sortBy(lambda x: int(x), False).take(1)
+            # print("Max value is: ", max_value)
+            min_value = column_data.sortBy(lambda x: int(x), True).take(1)
             # average and std
             column_data = np.array(column_data.collect()).astype('float')
             mean_value = np.mean(column_data)
@@ -110,8 +109,8 @@ def profile_single_file(sc, file):
             #print("column data has real\n")
             column_data = column_data_if_real.map(lambda x: x[0][0])
             # max and min
-            max_value = column_data.sortBy(lambda x: x, False).take(1)
-            min_value = column_data.sortBy(lambda x: x, True).take(1)
+            max_value = column_data.sortBy(lambda x: float(x), False).take(1)
+            min_value = column_data.sortBy(lambda x: float(x), True).take(1)
             # average and std
             column_data = np.array(column_data.collect()).astype('float')
             mean_value = np.mean(column_data)
@@ -150,13 +149,19 @@ def profile_single_file(sc, file):
 
     basic_information = {"dataset_name": file, "columns": columns_information,
                          "key_column_candidates": key_column_candidates}
-    with open('result.json', 'w') as fp:
+    with open(file[23:32]+'_result.json', 'w') as fp:
         json.dump(basic_information, fp)
 
 
 sc = SparkContext()
-# file_names = get_file_names(sc, "/user/hm74/NYCOpenData/")
+file_names = get_file_names(sc, "/user/hm74/NYCOpenData/")
 # for file_name in file_names:
-#     profile_single_file(sc, file_name)
+#     try:
+#         profile_single_file(sc, file_name)
+#     except Exception:
+#         print(file_name[23:], " has problem, ignore now")
+#         pass
 # profile_single_file(sc, "/user/hm74/NYCOpenData/uvks-tn5n.tsv.gz")
-profile_single_file(sc, "/user/hm74/NYCOpenData/xagh-idmf.tsv.gz")
+# profile_single_file(sc, "/user/hm74/NYCOpenData/yini-w76t.tsv.gz")
+profile_single_file(sc, "/user/hm74/NYCOpenData/29bw-z7pj.tsv.gz")
+# profile_single_file(sc, "/user/hm74/NYCOpenData/xagh-idmf.tsv.gz")
