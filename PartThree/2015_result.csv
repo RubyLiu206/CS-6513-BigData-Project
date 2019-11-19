@@ -1,0 +1,6 @@
+,borough,1,2,3,4,5
+0,MANHATTAN,HEAT/HOT WATER,Noise - Residential,Noise,Noise - Street/Sidewalk,Street Condition
+1,BROOKLYN,HEAT/HOT WATER,Noise - Residential,Blocked Driveway,Street Condition,Illegal Parking
+2,BRONX,HEAT/HOT WATER,Noise - Residential,UNSANITARY CONDITION,PAINT/PLASTER,Street Light Condition
+3,STATEN ISLAND,Street Condition,Noise - Residential,Illegal Parking,Street Light Condition,Water System
+4,QUEENS,Blocked Driveway,Noise - Residential,Street Condition,Street Light Condition,HEAT/HOT WATER

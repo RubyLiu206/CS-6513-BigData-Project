@@ -1,0 +1,6 @@
+,borough,1,2,3,4,5
+0,MANHATTAN,HEATING,Noise - Residential,GENERAL CONSTRUCTION,Noise,PLUMBING
+1,BROOKLYN,HEATING,GENERAL CONSTRUCTION,Noise - Residential,PLUMBING,PAINT - PLASTER
+2,BRONX,HEATING,GENERAL CONSTRUCTION,Noise - Residential,PLUMBING,PAINT - PLASTER
+3,STATEN ISLAND,Street Condition,Damaged Tree,Street Light Condition,Water System,Sewer
+4,QUEENS,Street Light Condition,Damaged Tree,Noise - Residential,HEATING,Blocked Driveway
