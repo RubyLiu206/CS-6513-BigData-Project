@@ -1,0 +1,6 @@
+,borough,1,2,3,4,5
+0,MANHATTAN,Noise,Noise - Street/Sidewalk,Street Light Condition,Water System,Taxi Complaint
+1,BROOKLYN,Street Light Condition,Sewer,Street Condition,Water System,Blocked Driveway
+2,BRONX,Street Light Condition,Water System,Noise - Street/Sidewalk,Sewer,Street Condition
+3,STATEN ISLAND,Street Light Condition,Street Condition,Water System,Sewer,Root/Sewer/Sidewalk Condition
+4,QUEENS,Street Light Condition,Sewer,Water System,Building/Use,Blocked Driveway

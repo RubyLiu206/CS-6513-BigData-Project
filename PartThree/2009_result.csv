@@ -1,0 +1,6 @@
+,borough,1,2,3,4,5
+0,MANHATTAN,Street Condition,Noise,Street Light Condition,General Construction/Plumbing,Taxi Complaint
+1,BROOKLYN,Street Light Condition,Street Condition,Blocked Driveway,General Construction/Plumbing,Water System
+2,BRONX,Street Light Condition,Street Condition,Water System,Blocked Driveway,Traffic Signal Condition
+3,STATEN ISLAND,Street Condition,Street Light Condition,Water System,Sewer,General Construction/Plumbing
+4,QUEENS,Street Light Condition,Street Condition,Blocked Driveway,Sewer,Building/Use

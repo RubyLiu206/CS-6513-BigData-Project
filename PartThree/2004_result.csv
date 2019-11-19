@@ -1,0 +1,6 @@
+,borough,1,2,3,4,5
+0,MANHATTAN,Noise - Street/Sidewalk,Noise - Commercial,Noise,Taxi Complaint,Water System
+1,BROOKLYN,Sewer,Noise - Street/Sidewalk,Water System,Blocked Driveway,General Construction/Plumbing
+2,BRONX,Noise - Street/Sidewalk,Water System,Sewer,Street Condition,Blocked Driveway
+3,STATEN ISLAND,Water System,Sewer,Street Condition,Missed Collection (All Materials),General Construction/Plumbing
+4,QUEENS,Sewer,Water System,Blocked Driveway,Noise - Street/Sidewalk,Building/Use
