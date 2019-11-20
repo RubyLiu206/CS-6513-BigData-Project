@@ -1,6 +1,6 @@
 ,borough,1,2,3,4,5
-0,MANHATTAN,Noise - Street/Sidewalk,Noise - Commercial,Noise,Taxi Complaint,Water System
-1,BROOKLYN,Sewer,Noise - Street/Sidewalk,Water System,Blocked Driveway,General Construction/Plumbing
-2,BRONX,Noise - Street/Sidewalk,Water System,Sewer,Street Condition,Blocked Driveway
-3,STATEN ISLAND,Water System,Sewer,Street Condition,Missed Collection (All Materials),General Construction/Plumbing
-4,QUEENS,Sewer,Water System,Blocked Driveway,Noise - Street/Sidewalk,Building/Use
+0,MANHATTAN,"['Noise - Street/Sidewalk', 18759]","['Noise - Commercial', 13243]","['Noise', 12324]","['Taxi Complaint', 10127]","['Water System', 9860]"
+1,BROOKLYN,"['Sewer', 21414]","['Noise - Street/Sidewalk', 19150]","['Water System', 15898]","['Blocked Driveway', 13528]","['General Construction/Plumbing', 11105]"
+2,BRONX,"['Noise - Street/Sidewalk', 11475]","['Water System', 7461]","['Sewer', 6840]","['Street Condition', 5043]","['Blocked Driveway', 4774]"
+3,STATEN ISLAND,"['Water System', 6704]","['Sewer', 6427]","['Street Condition', 5241]","['Missed Collection (All Materials)', 3017]","['General Construction/Plumbing', 2921]"
+4,QUEENS,"['Sewer', 26123]","['Water System', 17578]","['Blocked Driveway', 14288]","['Noise - Street/Sidewalk', 12240]","['Building/Use', 12167]"

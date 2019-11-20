@@ -1,6 +1,6 @@
 ,borough,1,2,3,4,5
-0,MANHATTAN,HEAT/HOT WATER,Noise - Residential,Noise,Noise - Street/Sidewalk,Street Condition
-1,BROOKLYN,HEAT/HOT WATER,Noise - Residential,Blocked Driveway,Street Condition,Illegal Parking
-2,BRONX,HEAT/HOT WATER,Noise - Residential,UNSANITARY CONDITION,PAINT/PLASTER,Street Light Condition
-3,STATEN ISLAND,Street Condition,Noise - Residential,Illegal Parking,Street Light Condition,Water System
-4,QUEENS,Blocked Driveway,Noise - Residential,Street Condition,Street Light Condition,HEAT/HOT WATER
+0,MANHATTAN,"['HEAT/HOT WATER', 54259]","['Noise - Residential', 46913]","['Noise', 27371]","['Noise - Street/Sidewalk', 22380]","['Street Condition', 19343]"
+1,BROOKLYN,"['HEAT/HOT WATER', 67876]","['Noise - Residential', 62902]","['Blocked Driveway', 36447]","['Street Condition', 35142]","['Illegal Parking', 33533]"
+2,BRONX,"['HEAT/HOT WATER', 71865]","['Noise - Residential', 49342]","['UNSANITARY CONDITION', 23620]","['PAINT/PLASTER', 22344]","['Street Light Condition', 17992]"
+3,STATEN ISLAND,"['Street Condition', 17574]","['Noise - Residential', 6258]","['Illegal Parking', 6223]","['Street Light Condition', 5946]","['Water System', 5653]"
+4,QUEENS,"['Blocked Driveway', 41486]","['Noise - Residential', 41301]","['Street Condition', 39395]","['Street Light Condition', 31244]","['HEAT/HOT WATER', 29558]"

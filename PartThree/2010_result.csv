@@ -1,6 +1,6 @@
 ,borough,1,2,3,4,5
-0,MANHATTAN,Noise - Residential,Street Condition,Taxi Complaint,Noise,Street Light Condition
-1,BROOKLYN,Noise - Residential,Street Light Condition,Street Condition,Blocked Driveway,General Construction/Plumbing
-2,BRONX,Noise - Residential,Street Light Condition,Water System,Street Condition,DHS Advantage - Tenant
-3,STATEN ISLAND,Street Condition,Street Light Condition,Water System,Sewer,Damaged Tree
-4,QUEENS,Street Light Condition,Street Condition,Noise - Residential,Blocked Driveway,Damaged Tree
+0,MANHATTAN,"['Noise - Residential', 24852]","['Street Condition', 20952]","['Taxi Complaint', 16070]","['Noise', 14492]","['Street Light Condition', 14181]"
+1,BROOKLYN,"['Noise - Residential', 34081]","['Street Light Condition', 31832]","['Street Condition', 29619]","['Blocked Driveway', 18592]","['General Construction/Plumbing', 17776]"
+2,BRONX,"['Noise - Residential', 31339]","['Street Light Condition', 22662]","['Water System', 13453]","['Street Condition', 11992]","['DHS Advantage - Tenant', 9193]"
+3,STATEN ISLAND,"['Street Condition', 12657]","['Street Light Condition', 7237]","['Water System', 5400]","['Sewer', 4887]","['Damaged Tree', 4427]"
+4,QUEENS,"['Street Light Condition', 38651]","['Street Condition', 27998]","['Noise - Residential', 22189]","['Blocked Driveway', 20446]","['Damaged Tree', 20292]"

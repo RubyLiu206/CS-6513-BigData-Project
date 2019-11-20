@@ -1,6 +1,6 @@
 ,borough,1,2,3,4,5
-0,MANHATTAN,Noise,Traffic Signal Condition,Street Light Condition,Noise - Street/Sidewalk,Taxi Complaint
-1,BROOKLYN,Street Light Condition,Traffic Signal Condition,Sewer,Water System,Blocked Driveway
-2,BRONX,Street Light Condition,Water System,Traffic Signal Condition,Sewer,Noise - Street/Sidewalk
-3,STATEN ISLAND,Street Light Condition,Street Condition,Water System,Sewer,Missed Collection (All Materials)
-4,QUEENS,Street Light Condition,Sewer,Water System,Traffic Signal Condition,Blocked Driveway
+0,MANHATTAN,"['Noise', 22501]","['Traffic Signal Condition', 18199]","['Street Light Condition', 18187]","['Noise - Street/Sidewalk', 15672]","['Taxi Complaint', 15194]"
+1,BROOKLYN,"['Street Light Condition', 34454]","['Traffic Signal Condition', 24259]","['Sewer', 23594]","['Water System', 21611]","['Blocked Driveway', 19500]"
+2,BRONX,"['Street Light Condition', 29681]","['Water System', 12175]","['Traffic Signal Condition', 9900]","['Sewer', 8896]","['Noise - Street/Sidewalk', 8265]"
+3,STATEN ISLAND,"['Street Light Condition', 12217]","['Street Condition', 9320]","['Water System', 7958]","['Sewer', 7730]","['Missed Collection (All Materials)', 4639]"
+4,QUEENS,"['Street Light Condition', 47007]","['Sewer', 30910]","['Water System', 21874]","['Traffic Signal Condition', 21085]","['Blocked Driveway', 20422]"

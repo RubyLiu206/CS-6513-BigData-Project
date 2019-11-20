@@ -1,6 +1,6 @@
 ,borough,1,2,3,4,5
-0,MANHATTAN,Noise,General Construction/Plumbing,Taxi Complaint,Street Condition,Street Light Condition
-1,BROOKLYN,Street Light Condition,Street Condition,Sewer,Traffic Signal Condition,General Construction/Plumbing
-2,BRONX,Street Light Condition,Water System,Street Condition,Blocked Driveway,Traffic Signal Condition
-3,STATEN ISLAND,Street Condition,Street Light Condition,Sewer,Water System,General Construction/Plumbing
-4,QUEENS,Street Light Condition,Sewer,General Construction/Plumbing,Street Condition,Blocked Driveway
+0,MANHATTAN,"['Noise', 21971]","['General Construction/Plumbing', 19174]","['Taxi Complaint', 17604]","['Street Condition', 16631]","['Street Light Condition', 16010]"
+1,BROOKLYN,"['Street Light Condition', 40528]","['Street Condition', 27352]","['Sewer', 24720]","['Traffic Signal Condition', 23064]","['General Construction/Plumbing', 22955]"
+2,BRONX,"['Street Light Condition', 27044]","['Water System', 10094]","['Street Condition', 8962]","['Blocked Driveway', 8531]","['Traffic Signal Condition', 8463]"
+3,STATEN ISLAND,"['Street Condition', 10777]","['Street Light Condition', 10347]","['Sewer', 7121]","['Water System', 6657]","['General Construction/Plumbing', 3871]"
+4,QUEENS,"['Street Light Condition', 49609]","['Sewer', 30394]","['General Construction/Plumbing', 23593]","['Street Condition', 22898]","['Blocked Driveway', 22292]"

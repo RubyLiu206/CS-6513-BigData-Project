@@ -1,6 +1,6 @@
 ,borough,1,2,3,4,5
-0,MANHATTAN,HEAT/HOT WATER,Noise - Residential,Noise - Street/Sidewalk,Noise,Illegal Parking
-1,BROOKLYN,HEAT/HOT WATER,Request Large Bulky Item Collection,Noise - Residential,Illegal Parking,Blocked Driveway
-2,BRONX,HEAT/HOT WATER,Noise - Residential,UNSANITARY CONDITION,Blocked Driveway,PAINT/PLASTER
-3,STATEN ISLAND,Request Large Bulky Item Collection,Street Condition,Illegal Parking,Street Light Condition,Missed Collection (All Materials)
-4,QUEENS,Request Large Bulky Item Collection,Blocked Driveway,Illegal Parking,Noise - Residential,Street Condition
+0,MANHATTAN,"['HEAT/HOT WATER', 49985]","['Noise - Residential', 47930]","['Noise - Street/Sidewalk', 29564]","['Noise', 28449]","['Illegal Parking', 22472]"
+1,BROOKLYN,"['HEAT/HOT WATER', 70271]","['Request Large Bulky Item Collection', 66207]","['Noise - Residential', 62330]","['Illegal Parking', 60752]","['Blocked Driveway', 49456]"
+2,BRONX,"['HEAT/HOT WATER', 71454]","['Noise - Residential', 56381]","['UNSANITARY CONDITION', 26726]","['Blocked Driveway', 24286]","['PAINT/PLASTER', 19971]"
+3,STATEN ISLAND,"['Request Large Bulky Item Collection', 14138]","['Street Condition', 12407]","['Illegal Parking', 8283]","['Street Light Condition', 6994]","['Missed Collection (All Materials)', 6923]"
+4,QUEENS,"['Request Large Bulky Item Collection', 71643]","['Blocked Driveway', 55328]","['Illegal Parking', 51202]","['Noise - Residential', 43758]","['Street Condition', 33221]"
