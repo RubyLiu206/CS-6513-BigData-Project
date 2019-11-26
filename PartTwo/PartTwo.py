@@ -11,9 +11,7 @@ import re
 from pyspark.sql import SQLContext
 import json
 
-
-
-def get_all_column():
+def get_file_column_name():
 	file_ = open('cluster3.txt')
 	line = file_.readline()
 	file_with_column = line.split(",")
@@ -27,11 +25,15 @@ def get_all_column():
 	#print(column_list)
 	return file_list,column_list
 
-		
 
+def read_into_RDD(file_name, column_name):
+	sc = SparkContext()
+	sqlContext = SQLContext(sc)
+	#5694-9szk.Business_Website_or_Other_URL.txt.gz for test
+	column_name = str(column_name)
+	column_name = column_name.replace("_", " ")
+	file_path = "/user/hm74/NYCOpenData/"+str(file_name)
 
-
-def semantic_profiling_file(sc, file_path, column_name):
 	lines = sc.textFile(file_path,1)
 	print("ther are:" + "\t" + str(lines.count()) + "lines in the file")
 	
@@ -46,19 +48,23 @@ def semantic_profiling_file(sc, file_path, column_name):
 	lines_without_header = lines.filter(lambda line: line!=header)
 	
 	specific_column = lines_without_header.map(lambda x: x[specific_column_index])
-	print(specific_column.take(5))
-
-	
-	
-
-def read_into_RDD(file_name, column_name):
-	sc = SparkContext()
-	sqlContext = SQLContext(sc)
-	#5694-9szk.Business_Website_or_Other_URL.txt.gz for test
-	column_name = str(column_name)
-	column_name = column_name.replace("_", " ")
-	semantic_profiling_file(sc, "/user/hm74/NYCOpenData/"+str(file_name), column_name)
+	return specific_column
 
 
-file_list, column_list = get_all_column()
-read_into_RDD(file_list[0], column_list[0])
+def dealing_with_column(column):	
+	data_collect = column.map(lambda x: (x,1)).reduceByKey(lambda x,y: x+y).sortByKey(lambda x: x[1])
+	print(data_collect.take(5))
+
+
+file_list, column_list = get_file_column_name()
+column = read_into_RDD(file_list[0], column_list[0])
+dealing_with_column(column)
+list_ =[list(file_list),list(column_list)]
+name = ['dataset','column_name']
+dataset = pd.DataFrame({'file': file_list, 'column_name':column_list})
+print(dataset)
+dataset.to_csv('true_type.csv', encoding = 'gbk')
+
+print(file_list)
+print(column_list)
+
