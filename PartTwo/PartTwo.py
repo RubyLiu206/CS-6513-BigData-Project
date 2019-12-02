@@ -11,6 +11,12 @@ from pyspark import SparkContext
 def get_semantic_type(line):
     if re.match("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", line) is not None:
         return "WebSites"
+    elif re.match("(?:\+?(\d{1})?-?\(?(\d{3})\)?[\s-\.]?)?(\d{3})[\s-\.]?(\d{4})[\s-\.]?", line) is not None:
+        return "Phone Number"
+    elif re.match("\(\d+, \d+\)", line) is not None:
+        return "LAT/LON coordinates"
+    elif re.match("r\d[-(0-9a-z)]+", line) is not None:
+        return "Building Classification"
     return "Others"
 
 
