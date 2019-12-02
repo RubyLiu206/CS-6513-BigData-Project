@@ -5,23 +5,24 @@ import re
 import csv
 from pyspark import SparkContext
 
+# change get_semantic_type function to add more semantic types
 
-def get_type(string):
-    if re.match("http://[\w\.]+\.(com|cn|org|edu)", string.lower()) is not None:
+
+def get_semantic_type(line):
+    if re.match("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", line) is not None:
         return "WebSites"
     return "Others"
 
 
 def semanticCheck(sc, file_name):
-    file_name = file_name[1:-1]
-    file_path = "/user/hm74/NYCColumns/" + str(file_name).strip()
-    print(file_path)
+    file_name = file_name.strip()[1:-1]
+    file_path = "/user/hm74/NYCColumns/" + str(file_name)
 
     data = sc.textFile(file_path, 1).mapPartitions(
         lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
     # key is semantic type, value is count
     semantic_information = {}
-    semantic_type = data.map(lambda x: (get_type(x[0]), int(
+    semantic_type = data.map(lambda x: (get_semantic_type(x[0].lower()), int(
         x[1]))).reduceByKey(lambda x, y: x+y).collect()
 
     for row in semantic_type:
@@ -35,8 +36,8 @@ def semanticCheck(sc, file_name):
 sc = SparkContext()
 
 file_list = open('cluster3.txt').readline().strip().split(",")
-semanticCheck(sc, file_list[0])
 
 # for item in file_list:
 #     semanticCheck(sc, item)
-#
+
+semanticCheck(sc, file_list[0])
