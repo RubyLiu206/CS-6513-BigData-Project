@@ -154,14 +154,19 @@ def profile_single_file(sc, file):
 
 
 sc = SparkContext()
+problems = []
 file_names = get_file_names(sc, "/user/hm74/NYCOpenData/")
-# for file_name in file_names:
-#     try:
-#         profile_single_file(sc, file_name)
-#     except Exception:
-#         print(file_name[23:], " has problem, ignore now")
-#         pass
+for file_name in file_names:
+    try:
+        profile_single_file(sc, file_name)
+    except Exception:
+        problems.append(str(file_name[23:]))
+        pass
+
+with open('problemFiles.txt', 'w') as f:
+    for item in problems:
+        f.write("%s\n" % item)
 # profile_single_file(sc, "/user/hm74/NYCOpenData/uvks-tn5n.tsv.gz")
 # profile_single_file(sc, "/user/hm74/NYCOpenData/yini-w76t.tsv.gz")
-profile_single_file(sc, "/user/hm74/NYCOpenData/29bw-z7pj.tsv.gz")
+# profile_single_file(sc, "/user/hm74/NYCOpenData/29bw-z7pj.tsv.gz")
 # profile_single_file(sc, "/user/hm74/NYCOpenData/xagh-idmf.tsv.gz")
