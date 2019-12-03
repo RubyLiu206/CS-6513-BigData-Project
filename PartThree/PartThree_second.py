@@ -36,7 +36,7 @@ def neigh_analysis(type_neigh, neigh_list):
         type = type_neigh.filter(lambda x: x[0][1] == str(zipcode)).map(lambda x: (x[0][0], x[1])).sortBy(lambda x: -x[1])
         type = type.take(3)
         for i in range(len(type)):
-            if type[i]:
+            if type[i]!='':
                 list_.append(type[i])
         result.append(list_)
         #print(list_)

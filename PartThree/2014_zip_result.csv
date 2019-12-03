@@ -1,0 +1,294 @@
+,neighbor,1,2,3
+0,10000,"('Noise - Park', 34)","('Street Condition', 11)","('Violation of Park Rules', 7)"
+1,10001,"('Noise', 1288)","('Taxi Complaint', 672)","('Street Condition', 617)"
+2,10002,"('Noise - Residential', 1956)","('Noise - Commercial', 1083)","('Noise', 927)"
+3,10003,"('Noise', 1247)","('Noise - Residential', 1201)","('Broken Muni Meter', 839)"
+4,10004,"('Noise', 219)","('Street Condition', 217)","('Taxi Complaint', 116)"
+5,10005,"('Noise', 325)","('Street Condition', 182)","('Noise - Street/Sidewalk', 144)"
+6,10006,"('Noise', 270)","('Street Condition', 96)","('Taxi Complaint', 61)"
+7,10007,"('Noise', 374)","('Street Condition', 291)","('Broken Muni Meter', 237)"
+8,10008,"('SCRIE', 1)",,
+9,10009,"('Noise - Residential', 2125)","('Noise - Commercial', 1116)","('Noise', 864)"
+10,10010,"('Noise', 729)","('Noise - Residential', 709)","('Indoor Air Quality', 392)"
+11,10011,"('Noise', 1183)","('Noise - Commercial', 743)","('Street Condition', 729)"
+12,10012,"('Noise', 764)","('Noise - Commercial', 667)","('Noise - Residential', 600)"
+13,10013,"('Noise', 1126)","('Broken Muni Meter', 1074)","('Street Condition', 679)"
+14,10014,"('Noise', 695)","('Noise - Commercial', 688)","('Noise - Residential', 649)"
+15,10015,"('Consumer Complaint', 1)",,
+16,10016,"('Noise', 1809)","('Street Condition', 881)","('Noise - Residential', 761)"
+17,10017,"('Noise', 514)","('Street Condition', 493)","('Illegal Parking', 463)"
+18,10018,"('Consumer Complaint', 407)","('Broken Muni Meter', 374)","('Noise', 313)"
+19,10019,"('Noise', 1412)","('Street Condition', 944)","('Broken Muni Meter', 893)"
+20,10020,"('Broken Muni Meter', 56)","('Noise', 31)","('Taxi Complaint', 26)"
+21,10021,"('Noise', 638)","('Broken Muni Meter', 636)","('Street Condition', 510)"
+22,10022,"('Street Condition', 825)","('Noise', 763)","('Taxi Complaint', 573)"
+23,10023,"('Broken Muni Meter', 2462)","('Noise', 979)","('Street Condition', 766)"
+24,10024,"('Broken Muni Meter', 1601)","('Noise - Residential', 992)","('HEAT/HOT WATER', 822)"
+25,10025,"('Noise - Residential', 2244)","('HEAT/HOT WATER', 1591)","('Noise', 952)"
+26,10026,"('Noise - Residential', 1794)","('HEAT/HOT WATER', 967)","('Noise - Street/Sidewalk', 838)"
+27,10027,"('Noise - Residential', 2751)","('HEAT/HOT WATER', 1613)","('HEATING', 1272)"
+28,10028,"('Broken Muni Meter', 857)","('Noise', 601)","('Noise - Residential', 490)"
+29,10029,"('Noise - Residential', 2550)","('HEAT/HOT WATER', 1385)","('Noise - Commercial', 1068)"
+30,10030,"('Noise - Residential', 1878)","('HEAT/HOT WATER', 1176)","('HEATING', 911)"
+31,10031,"('Noise - Residential', 3858)","('HEAT/HOT WATER', 2713)","('HEATING', 2041)"
+32,10032,"('Noise - Residential', 3255)","('HEAT/HOT WATER', 2229)","('PAINT/PLASTER', 1747)"
+33,10033,"('Noise - Residential', 2187)","('HEAT/HOT WATER', 1716)","('HEATING', 1518)"
+34,10034,"('Noise - Residential', 2295)","('HEAT/HOT WATER', 1600)","('Noise - Commercial', 1290)"
+35,10035,"('Noise - Residential', 1192)","('HEAT/HOT WATER', 715)","('HEATING', 511)"
+36,10036,"('Noise', 907)","('Street Condition', 801)","('Noise - Commercial', 706)"
+37,10037,"('Noise - Residential', 570)","('HEATING', 498)","('HEAT/HOT WATER', 465)"
+38,10038,"('Noise', 828)","('Noise - Residential', 353)","('Street Condition', 324)"
+39,10039,"('Noise - Residential', 1779)","('HEAT/HOT WATER', 623)","('HEATING', 512)"
+40,10040,"('HEAT/HOT WATER', 3259)","('Noise - Residential', 2861)","('HEATING', 2082)"
+41,10041,"('Noise', 3)","('Sewer', 2)","('Taxi Complaint', 1)"
+42,10042,,,
+43,10043,,,
+44,10044,"('HEATING', 57)","('HEAT/HOT WATER', 34)","('Noise', 29)"
+45,10045,,,
+46,10046,,,
+47,10047,,,
+48,10048,"('Traffic Signal Condition', 13)","('Taxi Complaint', 11)","('Street Condition', 5)"
+49,10049,,,
+50,10050,,,
+51,10051,,,
+52,10052,,,
+53,10053,,,
+54,10054,,,
+55,10055,,,
+56,10056,,,
+57,10057,,,
+58,10058,,,
+59,10059,,,
+60,10060,,,
+61,10061,,,
+62,10062,,,
+63,10063,,,
+64,10064,,,
+65,10065,"('Noise', 517)","('Street Condition', 480)","('Broken Muni Meter', 324)"
+66,10066,,,
+67,10067,,,
+68,10068,,,
+69,10069,"('Illegal Parking', 54)","('Noise - Residential', 47)","('DOF Property - Owner Issue', 35)"
+70,10070,,,
+71,10071,,,
+72,10072,,,
+73,10073,,,
+74,10074,,,
+75,10075,"('Street Condition', 352)","('Noise', 313)","('Broken Muni Meter', 300)"
+76,10076,,,
+77,10077,,,
+78,10078,,,
+79,10079,,,
+80,10080,,,
+81,10081,,,
+82,10082,,,
+83,10083,,,
+84,10084,,,
+85,10085,,,
+86,10086,,,
+87,10087,,,
+88,10088,,,
+89,10089,,,
+90,10090,,,
+91,10091,,,
+92,10092,,,
+93,10093,,,
+94,10094,,,
+95,10095,,,
+96,10096,,,
+97,10097,,,
+98,10098,,,
+99,10099,,,
+100,10100,,,
+101,10101,"('Broken Muni Meter', 1)",,
+102,10102,,,
+103,10103,"('Broken Muni Meter', 4)","('Consumer Complaint', 3)","('Taxi Complaint', 2)"
+104,10104,"('Housing Options', 1)",,
+105,10105,,,
+106,10106,,,
+107,10107,"('Noise', 4)","('General Construction/Plumbing', 1)","('Emergency Response Team (ERT)', 1)"
+108,10108,"('Housing - Low Income Senior', 1)",,
+109,10109,,,
+110,10110,"('Construction Safety Enforcement', 2)",,
+111,10111,"('Broken Muni Meter', 4)","('Taxi Complaint', 2)","('Food Poisoning', 2)"
+112,10112,"('Noise', 4)","('Water System', 4)","('Electrical', 2)"
+113,10113,,,
+114,10114,,,
+115,10115,"('Homeless Person Assistance', 1)",,
+116,10116,"('SCRIE', 4)","('Housing - Low Income Senior', 2)",
+117,10117,,,
+118,10118,"('Construction Safety Enforcement', 2)","('Water System', 2)",
+119,10119,"('Broken Muni Meter', 18)","('Illegal Parking', 7)","('Taxi Complaint', 7)"
+120,10120,,,
+121,10121,"('Special Projects Inspection Team (SPIT)', 1)",,
+122,10122,"('Consumer Complaint', 1)","('Emergency Response Team (ERT)', 1)","('For Hire Vehicle Complaint', 1)"
+123,10123,"('Sidewalk Condition', 2)","('Consumer Complaint', 1)","('Mold', 1)"
+124,10124,,,
+125,10125,,,
+126,10126,,,
+127,10127,,,
+128,10128,"('Noise - Residential', 927)","('Noise', 795)","('HEAT/HOT WATER', 547)"
+129,10129,"('PAINT - PLASTER', 22)","('Broken Muni Meter', 8)","('Missed Collection (All Materials)', 7)"
+130,10130,,,
+131,10131,,,
+132,10132,,,
+133,10133,,,
+134,10134,,,
+135,10135,,,
+136,10136,,,
+137,10137,,,
+138,10138,,,
+139,10139,,,
+140,10140,,,
+141,10141,,,
+142,10142,,,
+143,10143,,,
+144,10144,,,
+145,10145,,,
+146,10146,,,
+147,10147,,,
+148,10148,,,
+149,10149,,,
+150,10150,"('SCRIE', 1)","('Housing - Low Income Senior', 1)",
+151,10151,,,
+152,10152,,,
+153,10153,"('Consumer Complaint', 8)","('General Construction/Plumbing', 3)","('Taxi Complaint', 3)"
+154,10154,,,
+155,10155,,,
+156,10156,,,
+157,10157,,,
+158,10158,"('Emergency Response Team (ERT)', 1)",,
+159,10159,,,
+160,10160,,,
+161,10161,,,
+162,10162,"('Noise - Residential', 10)","('Rodent', 5)","('Noise', 4)"
+163,10163,"('Consumer Complaint', 2)",,
+164,10164,,,
+165,10165,"('Homeless Person Assistance', 1)",,
+166,10166,,,
+167,10167,"('Construction Safety Enforcement', 2)","('General Construction/Plumbing', 1)",
+168,10168,,,
+169,10169,,,
+170,10170,,,
+171,10171,,,
+172,10172,,,
+173,10173,"('Sewer', 1)",,
+174,10174,,,
+175,10175,,,
+176,10176,,,
+177,10177,"('Homeless Person Assistance', 1)",,
+178,10178,,,
+179,10179,,,
+180,10180,,,
+181,10181,,,
+182,10182,,,
+183,10183,,,
+184,10184,,,
+185,10185,,,
+186,10186,,,
+187,10187,,,
+188,10188,,,
+189,10189,,,
+190,10190,,,
+191,10191,,,
+192,10192,,,
+193,10193,,,
+194,10194,,,
+195,10195,,,
+196,10196,,,
+197,10197,,,
+198,10198,,,
+199,10199,,,
+200,10200,,,
+201,10201,,,
+202,10202,,,
+203,10203,,,
+204,10204,,,
+205,10205,,,
+206,10206,,,
+207,10207,,,
+208,10208,,,
+209,10209,,,
+210,10210,,,
+211,10211,,,
+212,10212,,,
+213,10213,,,
+214,10214,,,
+215,10215,,,
+216,10216,,,
+217,10217,,,
+218,10218,,,
+219,10219,,,
+220,10220,,,
+221,10221,,,
+222,10222,,,
+223,10223,,,
+224,10224,,,
+225,10225,,,
+226,10226,,,
+227,10227,,,
+228,10228,,,
+229,10229,,,
+230,10230,,,
+231,10231,,,
+232,10232,,,
+233,10233,,,
+234,10234,,,
+235,10235,,,
+236,10236,,,
+237,10237,,,
+238,10238,,,
+239,10239,,,
+240,10240,,,
+241,10241,,,
+242,10242,,,
+243,10243,,,
+244,10244,,,
+245,10245,,,
+246,10246,,,
+247,10247,,,
+248,10248,,,
+249,10249,,,
+250,10250,,,
+251,10251,,,
+252,10252,,,
+253,10253,,,
+254,10254,,,
+255,10255,,,
+256,10256,,,
+257,10257,,,
+258,10258,,,
+259,10259,,,
+260,10260,,,
+261,10261,,,
+262,10262,,,
+263,10263,,,
+264,10264,,,
+265,10265,,,
+266,10266,,,
+267,10267,,,
+268,10268,,,
+269,10269,,,
+270,10270,,,
+271,10271,"('Construction Safety Enforcement', 1)","('Emergency Response Team (ERT)', 1)",
+272,10272,,,
+273,10273,,,
+274,10274,,,
+275,10275,,,
+276,10276,,,
+277,10277,,,
+278,10278,,,
+279,10279,,,
+280,10280,"('Noise', 97)","('Street Condition', 57)","('Illegal Parking', 43)"
+281,10281,"('For Hire Vehicle Complaint', 23)","('Noise', 22)","('Taxi Complaint', 16)"
+282,10282,"('Noise', 68)","('Taxi Complaint', 30)","('Street Condition', 12)"
+283,10283,,,
+284,10284,,,
+285,10285,,,
+286,10286,,,
+287,10287,,,
+288,10288,,,
+289,10289,,,
+290,10290,,,
+291,10291,,,
+292,10292,,,

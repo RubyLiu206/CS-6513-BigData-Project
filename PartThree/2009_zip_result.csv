@@ -1,53 +1,53 @@
 ,neighbor,1,2,3
-0,10000,"('Noise - Park', 68)","('Violation of Park Rules', 22)","('Taxi Complaint', 21)"
-1,10001,"('Taxi Complaint', 824)","('HEATING', 817)","('Street Condition', 609)"
-2,10002,"('HEATING', 1217)","('Noise - Commercial', 788)","('Street Condition', 720)"
-3,10003,"('Broken Muni Meter', 1319)","('HEATING', 1005)","('Noise - Commercial', 801)"
-4,10004,"('Street Condition', 163)","('Taxi Complaint', 124)","('Street Light Condition', 118)"
-5,10005,"('Street Condition', 160)","('Noise', 158)","('Street Light Condition', 135)"
-6,10006,"('Noise', 194)","('General Construction/Plumbing', 157)","('Street Condition', 79)"
-7,10007,"('Street Condition', 350)","('Noise', 204)","('General Construction/Plumbing', 202)"
+0,10000,"['Noise - Park', 68]","['Violation of Park Rules', 22]","['Taxi Complaint', 21]"
+1,10001,"['Taxi Complaint', 824]","['HEATING', 817]","['Street Condition', 609]"
+2,10002,"['HEATING', 1217]","['Noise - Commercial', 788]","['Street Condition', 720]"
+3,10003,"['Broken Muni Meter', 1319]","['HEATING', 1005]","['Noise - Commercial', 801]"
+4,10004,"['Street Condition', 163]","['Taxi Complaint', 124]","['Street Light Condition', 118]"
+5,10005,"['Street Condition', 160]","['Noise', 158]","['Street Light Condition', 135]"
+6,10006,"['Noise', 194]","['General Construction/Plumbing', 157]","['Street Condition', 79]"
+7,10007,"['Street Condition', 350]","['Noise', 204]","['General Construction/Plumbing', 202]"
 8,10008,,,
-9,10009,"('HEATING', 1522)","('Noise - Commercial', 1264)","('Noise - Street/Sidewalk', 503)"
-10,10010,"('HEATING', 576)","('Broken Muni Meter', 461)","('Street Condition', 443)"
-11,10011,"('HEATING', 924)","('General Construction/Plumbing', 916)","('Taxi Complaint', 732)"
-12,10012,"('Noise - Commercial', 882)","('Vending', 566)","('HEATING', 553)"
-13,10013,"('General Construction/Plumbing', 803)","('Broken Muni Meter', 735)","('Street Condition', 681)"
-14,10014,"('HEATING', 889)","('Noise - Commercial', 741)","('Street Condition', 659)"
+9,10009,"['HEATING', 1522]","['Noise - Commercial', 1264]","['Noise - Street/Sidewalk', 503]"
+10,10010,"['HEATING', 576]","['Broken Muni Meter', 461]","['Street Condition', 443]"
+11,10011,"['HEATING', 924]","['General Construction/Plumbing', 916]","['Taxi Complaint', 732]"
+12,10012,"['Noise - Commercial', 882]","['Vending', 566]","['HEATING', 553]"
+13,10013,"['General Construction/Plumbing', 803]","['Broken Muni Meter', 735]","['Street Condition', 681]"
+14,10014,"['HEATING', 889]","['Noise - Commercial', 741]","['Street Condition', 659]"
 15,10015,,,
-16,10016,"('Street Condition', 1007)","('Noise', 901)","('HEATING', 843)"
-17,10017,"('Taxi Complaint', 715)","('Street Condition', 463)","('Broken Muni Meter', 462)"
-18,10018,"('General Construction/Plumbing', 385)","('Street Condition', 342)","('Taxi Complaint', 315)"
-19,10019,"('Broken Muni Meter', 1315)","('Taxi Complaint', 1115)","('Street Condition', 1062)"
-20,10020,"('Broken Muni Meter', 101)","('Taxi Complaint', 47)","('Street Condition', 22)"
-21,10021,"('Street Condition', 706)","('Noise', 563)","('HEATING', 418)"
-22,10022,"('Street Condition', 956)","('Taxi Complaint', 851)","('Broken Muni Meter', 700)"
-23,10023,"('HEATING', 917)","('Noise', 776)","('Street Condition', 650)"
-24,10024,"('HEATING', 1079)","('Street Condition', 648)","('Noise', 564)"
-25,10025,"('HEATING', 2238)","('GENERAL CONSTRUCTION', 884)","('Noise - Street/Sidewalk', 817)"
-26,10026,"('HEATING', 1489)","('PLUMBING', 688)","('GENERAL CONSTRUCTION', 682)"
-27,10027,"('HEATING', 2416)","('GENERAL CONSTRUCTION', 1324)","('PLUMBING', 1112)"
-28,10028,"('HEATING', 748)","('Street Condition', 544)","('Noise', 433)"
-29,10029,"('HEATING', 1999)","('GENERAL CONSTRUCTION', 851)","('PLUMBING', 745)"
-30,10030,"('HEATING', 1399)","('GENERAL CONSTRUCTION', 912)","('PLUMBING', 818)"
-31,10031,"('HEATING', 4664)","('GENERAL CONSTRUCTION', 2946)","('PLUMBING', 2550)"
-32,10032,"('HEATING', 4338)","('GENERAL CONSTRUCTION', 2982)","('PLUMBING', 2616)"
-33,10033,"('HEATING', 3328)","('GENERAL CONSTRUCTION', 1680)","('PAINT - PLASTER', 1567)"
-34,10034,"('HEATING', 2524)","('GENERAL CONSTRUCTION', 1436)","('PLUMBING', 1227)"
-35,10035,"('HEATING', 1204)","('GENERAL CONSTRUCTION', 674)","('PLUMBING', 513)"
-36,10036,"('HEATING', 792)","('Taxi Complaint', 755)","('Street Condition', 568)"
-37,10037,"('HEATING', 638)","('PAINT - PLASTER', 364)","('GENERAL CONSTRUCTION', 362)"
-38,10038,"('Noise', 337)","('Street Condition', 279)","('Street Light Condition', 230)"
-39,10039,"('HEATING', 1128)","('GENERAL CONSTRUCTION', 451)","('PLUMBING', 442)"
-40,10040,"('HEATING', 4333)","('GENERAL CONSTRUCTION', 1974)","('PAINT - PLASTER', 1417)"
+16,10016,"['Street Condition', 1007]","['Noise', 901]","['HEATING', 843]"
+17,10017,"['Taxi Complaint', 715]","['Street Condition', 463]","['Broken Muni Meter', 462]"
+18,10018,"['General Construction/Plumbing', 385]","['Street Condition', 342]","['Taxi Complaint', 315]"
+19,10019,"['Broken Muni Meter', 1315]","['Taxi Complaint', 1115]","['Street Condition', 1062]"
+20,10020,"['Broken Muni Meter', 101]","['Taxi Complaint', 47]","['Street Condition', 22]"
+21,10021,"['Street Condition', 706]","['Noise', 563]","['HEATING', 418]"
+22,10022,"['Street Condition', 956]","['Taxi Complaint', 851]","['Broken Muni Meter', 700]"
+23,10023,"['HEATING', 917]","['Noise', 776]","['Street Condition', 650]"
+24,10024,"['HEATING', 1079]","['Street Condition', 648]","['Noise', 564]"
+25,10025,"['HEATING', 2238]","['GENERAL CONSTRUCTION', 884]","['Noise - Street/Sidewalk', 817]"
+26,10026,"['HEATING', 1489]","['PLUMBING', 688]","['GENERAL CONSTRUCTION', 682]"
+27,10027,"['HEATING', 2416]","['GENERAL CONSTRUCTION', 1324]","['PLUMBING', 1112]"
+28,10028,"['HEATING', 748]","['Street Condition', 544]","['Noise', 433]"
+29,10029,"['HEATING', 1999]","['GENERAL CONSTRUCTION', 851]","['PLUMBING', 745]"
+30,10030,"['HEATING', 1399]","['GENERAL CONSTRUCTION', 912]","['PLUMBING', 818]"
+31,10031,"['HEATING', 4664]","['GENERAL CONSTRUCTION', 2946]","['PLUMBING', 2550]"
+32,10032,"['HEATING', 4338]","['GENERAL CONSTRUCTION', 2982]","['PLUMBING', 2616]"
+33,10033,"['HEATING', 3328]","['GENERAL CONSTRUCTION', 1680]","['PAINT - PLASTER', 1567]"
+34,10034,"['HEATING', 2524]","['GENERAL CONSTRUCTION', 1436]","['PLUMBING', 1227]"
+35,10035,"['HEATING', 1204]","['GENERAL CONSTRUCTION', 674]","['PLUMBING', 513]"
+36,10036,"['HEATING', 792]","['Taxi Complaint', 755]","['Street Condition', 568]"
+37,10037,"['HEATING', 638]","['PAINT - PLASTER', 364]","['GENERAL CONSTRUCTION', 362]"
+38,10038,"['Noise', 337]","['Street Condition', 279]","['Street Light Condition', 230]"
+39,10039,"['HEATING', 1128]","['GENERAL CONSTRUCTION', 451]","['PLUMBING', 442]"
+40,10040,"['HEATING', 4333]","['GENERAL CONSTRUCTION', 1974]","['PAINT - PLASTER', 1417]"
 41,10041,,,
 42,10042,,,
 43,10043,,,
-44,10044,"('HEATING', 46)","('GENERAL CONSTRUCTION', 35)","('Noise', 29)"
+44,10044,"['HEATING', 46]","['GENERAL CONSTRUCTION', 35]","['Noise', 29]"
 45,10045,,,
 46,10046,,,
 47,10047,,,
-48,10048,"('Traffic Signal Condition', 15)","('Vending', 10)","('Taxi Complaint', 9)"
+48,10048,"['Traffic Signal Condition', 15]","['Vending', 10]","['Taxi Complaint', 9]"
 49,10049,,,
 50,10050,,,
 51,10051,,,
@@ -64,17 +64,17 @@
 62,10062,,,
 63,10063,,,
 64,10064,,,
-65,10065,"('Street Condition', 800)","('HEATING', 505)","('Noise', 413)"
+65,10065,"['Street Condition', 800]","['HEATING', 505]","['Noise', 413]"
 66,10066,,,
 67,10067,,,
 68,10068,,,
-69,10069,"('Taxi Complaint', 25)","('Maintenance or Facility', 19)","('Street Condition', 18)"
+69,10069,"['Taxi Complaint', 25]","['Maintenance or Facility', 19]","['Street Condition', 18]"
 70,10070,,,
 71,10071,,,
 72,10072,,,
 73,10073,,,
 74,10074,,,
-75,10075,"('Street Condition', 421)","('HEATING', 306)","('Noise', 243)"
+75,10075,"['Street Condition', 421]","['HEATING', 306]","['Noise', 243]"
 76,10076,,,
 77,10077,,,
 78,10078,,,
@@ -127,7 +127,7 @@
 125,10125,,,
 126,10126,,,
 127,10127,,,
-128,10128,"('HEATING', 709)","('Street Condition', 547)","('Noise', 537)"
+128,10128,"['HEATING', 709]","['Street Condition', 547]","['Noise', 537]"
 129,10129,,,
 130,10130,,,
 131,10131,,,
@@ -158,11 +158,11 @@
 156,10156,,,
 157,10157,,,
 158,10158,,,
-159,10159,"('Consumer Complaint', 1)",,
+159,10159,"['Consumer Complaint', 1]",,
 160,10160,,,
 161,10161,,,
-162,10162,"('Dirty Conditions', 1)","('Noise', 1)","('Consumer Complaint', 1)"
-163,10163,"('Consumer Complaint', 1)",,
+162,10162,"['Dirty Conditions', 1]","['Noise', 1]","['Consumer Complaint', 1]"
+163,10163,"['Consumer Complaint', 1]",,
 164,10164,,,
 165,10165,,,
 166,10166,,,
@@ -273,19 +273,19 @@
 271,10271,,,
 272,10272,,,
 273,10273,,,
-274,10274,"('Consumer Complaint', 1)",,
+274,10274,"['Consumer Complaint', 1]",,
 275,10275,,,
 276,10276,,,
 277,10277,,,
 278,10278,,,
 279,10279,,,
-280,10280,"('Noise', 175)","('Taxi Complaint', 67)","('Air Quality', 32)"
-281,10281,"('Taxi Complaint', 7)","('Noise', 4)","('General Construction/Plumbing', 3)"
-282,10282,"('Noise', 43)","('Taxi Complaint', 41)","('General Construction/Plumbing', 14)"
+280,10280,"['Noise', 175]","['Taxi Complaint', 67]","['Air Quality', 32]"
+281,10281,"['Taxi Complaint', 7]","['Noise', 4]","['General Construction/Plumbing', 3]"
+282,10282,"['Noise', 43]","['Taxi Complaint', 41]","['General Construction/Plumbing', 14]"
 283,10283,,,
 284,10284,,,
 285,10285,,,
-286,10286,"('Consumer Complaint', 1)",,
+286,10286,"['Consumer Complaint', 1]",,
 287,10287,,,
 288,10288,,,
 289,10289,,,
