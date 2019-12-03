@@ -8,6 +8,8 @@ from pyspark import SparkContext
 # change get_semantic_type function to add more semantic types
 school_level = ['k-2', 'elementary', 'elementary school', 'middle']
 borough = ['brooklyn', 'manhattan', 'bronx', 'staten island', 'queens']
+
+
 def get_semantic_type(line):
     if re.match("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", line) is not None:
         return "WebSites"
@@ -31,7 +33,8 @@ def semanticCheck(sc, file_name):
         lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
     # key is semantic type, value is count
     semantic_information = {}
-    semantic_type = data.map(lambda x: (get_semantic_type(x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y).collect()
+    semantic_type = data.map(lambda x: (get_semantic_type(
+        x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y).collect()
     for row in semantic_type:
         semantic_information["semantic_type"] = row[0]
         semantic_information["count"] = row[1]

@@ -154,8 +154,19 @@ def profile_single_file(sc, file):
 
 
 sc = SparkContext()
+path = "/user/hm74/NYCOpenData/"
+# profile_single_file(sc, path+"i8ys-e4pm.tsv.gz")
+
 problems = []
-file_names = get_file_names(sc, "/user/hm74/NYCOpenData/")
+# file_names = get_file_names(sc, "/user/hm74/NYCOpenData/")
+
+# this block is for second run only
+file_names = []
+secondFile = open("secondRunFiles.txt", "r")
+for i in secondFile.readlines():
+    i = path+i.strip()
+    file_names.append(i)
+
 for file_name in file_names:
     try:
         profile_single_file(sc, file_name)
@@ -166,7 +177,3 @@ for file_name in file_names:
 with open('problemFiles.txt', 'w') as f:
     for item in problems:
         f.write("%s\n" % item)
-# profile_single_file(sc, "/user/hm74/NYCOpenData/uvks-tn5n.tsv.gz")
-# profile_single_file(sc, "/user/hm74/NYCOpenData/yini-w76t.tsv.gz")
-# profile_single_file(sc, "/user/hm74/NYCOpenData/29bw-z7pj.tsv.gz")
-# profile_single_file(sc, "/user/hm74/NYCOpenData/xagh-idmf.tsv.gz")
