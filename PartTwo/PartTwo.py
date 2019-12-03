@@ -6,8 +6,8 @@ import csv
 from pyspark import SparkContext
 
 # change get_semantic_type function to add more semantic types
-
-
+school_level = ['k-2', 'elementary', 'elementary school', 'middle']
+borough = ['brooklyn', 'manhattan', 'bronx', 'staten island', 'queens']
 def get_semantic_type(line):
     if re.match("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", line) is not None:
         return "WebSites"
@@ -17,33 +17,33 @@ def get_semantic_type(line):
         return "LAT/LON coordinates"
     elif re.match("r\d[-(0-9a-z)]+", line) is not None:
         return "Building Classification"
+    elif line in school_level:
+        return "School Level"
+    elif line in borough:
+        return "Borough"
     return "Others"
 
 
 def semanticCheck(sc, file_name):
     file_name = file_name.strip()[1:-1]
     file_path = "/user/hm74/NYCColumns/" + str(file_name)
-
     data = sc.textFile(file_path, 1).mapPartitions(
         lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
     # key is semantic type, value is count
     semantic_information = {}
-    semantic_type = data.map(lambda x: (get_semantic_type(x[0].lower()), int(
-        x[1]))).reduceByKey(lambda x, y: x+y).collect()
-
+    semantic_type = data.map(lambda x: (get_semantic_type(x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y).collect()
     for row in semantic_type:
         semantic_information["semantic_type"] = row[0]
         semantic_information["count"] = row[1]
-
     with open(file_name+'_semantic_result.json', 'w') as fp:
         json.dump({"semantic_types": semantic_information}, fp)
 
 
 sc = SparkContext()
 
-file_list = open('cluster3.txt').readline().strip().split(",")
+file_list = open('cluster3.txt').readline().strip().replace(' ', '').split(",")
 
 # for item in file_list:
 #     semanticCheck(sc, item)
-
-semanticCheck(sc, file_list[0])
+for i in range(5):
+    semanticCheck(sc, file_list[i])
