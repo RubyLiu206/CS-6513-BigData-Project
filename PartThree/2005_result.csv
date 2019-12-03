@@ -1,6 +1,3 @@
-,borough,1,2,3,4,5
-0,MANHATTAN,"['Noise', 18882]","['Noise - Street/Sidewalk', 16690]","['Street Light Condition', 15752]","['Water System', 15359]","['Taxi Complaint', 13526]"
-1,BROOKLYN,"['Street Light Condition', 34045]","['Sewer', 25462]","['Street Condition', 21142]","['Water System', 20644]","['Blocked Driveway', 19171]"
-2,BRONX,"['Street Light Condition', 29898]","['Water System', 11839]","['Noise - Street/Sidewalk', 10334]","['Sewer', 9070]","['Street Condition', 7824]"
-3,STATEN ISLAND,"['Street Light Condition', 10208]","['Street Condition', 9661]","['Water System', 8986]","['Sewer', 7701]","['Root/Sewer/Sidewalk Condition', 4790]"
-4,QUEENS,"['Street Light Condition', 45740]","['Sewer', 32554]","['Water System', 28090]","['Building/Use', 20615]","['Blocked Driveway', 20184]"
+version https://git-lfs.github.com/spec/v1
+oid sha256:f1182976393d41282f3b8bf883b12181118ff8cce50721d0caa83152551e5408
+size 795

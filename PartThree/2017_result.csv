@@ -1,6 +1,3 @@
-,borough,1,2,3,4,5
-0,MANHATTAN,"['Noise - Residential', 51049]","['HEAT/HOT WATER', 46529]","['Noise - Street/Sidewalk', 29164]","['Noise', 29002]","['Illegal Parking', 19702]"
-1,BROOKLYN,"['Noise - Residential', 67653]","['HEAT/HOT WATER', 66984]","['Illegal Parking', 55427]","['Blocked Driveway', 49348]","['UNSANITARY CONDITION', 26659]"
-2,BRONX,"['HEAT/HOT WATER', 68718]","['Noise - Residential', 57680]","['Blocked Driveway', 24597]","['UNSANITARY CONDITION', 24561]","['PAINT/PLASTER', 19496]"
-3,STATEN ISLAND,"['Electronics Waste', 12191]","['Street Condition', 10565]","['Illegal Parking', 7583]","['Noise - Residential', 6745]","['Street Light Condition', 6604]"
-4,QUEENS,"['Blocked Driveway', 54333]","['Noise - Residential', 46406]","['Illegal Parking', 46100]","['Street Condition', 30632]","['HEAT/HOT WATER', 29217]"
+version https://git-lfs.github.com/spec/v1
+oid sha256:e81dbdd6dad1b404182cd79fb89d24639787f2dd660020c20c1e1c776d32ccb6
+size 833

@@ -1,6 +1,3 @@
-,borough,1,2,3,4,5
-0,MANHATTAN,"['HEATING', 27276]","['Noise - Residential', 24342]","['Street Condition', 21810]","['GENERAL CONSTRUCTION', 18619]","['Noise', 16214]"
-1,BROOKLYN,"['GENERAL CONSTRUCTION', 42950]","['HEATING', 40263]","['PLUMBING', 34907]","['Noise - Residential', 34019]","['PAINT - PLASTER', 32389]"
-2,BRONX,"['HEATING', 35825]","['GENERAL CONSTRUCTION', 32575]","['Noise - Residential', 29035]","['PLUMBING', 27494]","['PAINT - PLASTER', 25895]"
-3,STATEN ISLAND,"['Street Condition', 13018]","['Sewer', 6450]","['Street Light Condition', 5969]","['Damaged Tree', 5870]","['Water System', 4875]"
-4,QUEENS,"['Street Light Condition', 31227]","['Street Condition', 28399]","['Blocked Driveway', 21427]","['Noise - Residential', 21170]","['Sewer', 19202]"
+version https://git-lfs.github.com/spec/v1
+oid sha256:9b12c139adb6923f267bb69504ddef45821b392d8023447556c461a6d1973b54
+size 771

@@ -37,7 +37,7 @@ def neigh_analysis(type_neigh, neigh_list):
         type = type.take(3)
         for i in range(len(type)):
             if type[i]!='':
-                list_.append(type[i])
+                list_.append(list(type[i]))
         result.append(list_)
         #print(list_)
     
