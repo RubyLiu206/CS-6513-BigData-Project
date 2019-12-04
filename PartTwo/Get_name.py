@@ -1,20 +1,54 @@
-import sys
-import numpy as np
 import json
 import re
 import csv
 from pyspark import SparkContext
 
-# change get_semantic_type function to add more semantic types
-<<<<<<< HEAD
-school_level = ['k-2', 'elementary', 'elementary school', 'middle']
-borough = ['brooklyn', 'manhattan', 'bronx', 'staten island', 'queens']
+# school type
+sc = SparkContext()
+file_name = "yahh-6yjc.School_Type.txt.gz"
+file_path = "/user/hm74/NYCColumns/" + file_name
+school_type = sc.textFile(file_path, 1).mapPartitions(lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+school_type = school_type.map(lambda x: x[0]).collect()
+print("school type:")
+print(school_type)
 
-=======
-school_level = ['elementary', 'high school', 'high school transfer', 'k-2',
-                'k-3', 'k-8', 'middle', 'yabc', 'elementary school', 'k-8 school',
-                'middle school', 'transfer school', 'transfer high school', 'd75']
-neighborhood_name = ['arrochar-shore acres', 'dongan hills', 'grant city', 'grymes hill',
+file_name = ["4n2j-ut8i.SCHOOL_LEVEL_.txt.gz","weg5-33pj.SCHOOL_LEVEL_.txt.gz","upwt-zvh3.SCHOOL_LEVEL_.txt.gz","cvh6-nmyi.SCHOOL_LEVEL_.txt.gz", "6je4-4x7e.SCHOOL_LEVEL_.txt.gz"]
+result = []
+for name in file_name:
+    file_path = "/user/hm74/NYCColumns/" + name
+    school_level = sc.textFile(file_path, 1).mapPartitions(lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+    school_level = school_level.map(lambda x: x[0]).collect()
+    for level in school_level:
+        if level not in result:
+            result.append(level)
+print("school level:")
+print(result)
+#school level = ['ELEMENTARY', 'HIGH SCHOOL', 'HIGH SCHOOL TRANSFER',
+# 'K-2', 'K-3', 'K-8', 'MIDDLE', 'YABC', 'ELEMENTARY SCHOOL',
+# 'K-8 SCHOOL', 'MIDDLE SCHOOL', 'TRANSFER SCHOOL', 'TRANSFER HIGH SCHOOL', 'D75']
+school_type_result = ['elementary', 'high school', 'high school transfer', 'k-2', 'k-3', 'k-8', 'middle', 'yabc', 'elementary school', 'k-8 school', 'middle school', 'transfer school', 'transfer high school', 'd75']
+
+
+
+
+# neighborhood
+file_name = ["wv4q-e75v.STATEN_ISLAND_CONDOMINIUM_PROPERTY_Neighborhood.txt.gz",
+             "a5qt-5jpu.STATEN_ISLAND_CONDOMINIUM_PROPERTY_Neighborhood.txt.gz",
+             "bawj-6bgn.BRONX_CONDOMINIUM_PROPERTY_Neighborhood.txt.gz",
+             "m59i-mqex.QUEENS_CONDOMINIUM_PROPERTY_Neighborhood.txt.gz",
+             "5mw2-hzqx.BROOKLYN_CONDOMINIUM_PROPERTY_Neighborhood.txt.gz",
+             "crbs-vur7.QUEENS_CONDOMINIUM_PROPERTY_Neighborhood.txt.gz"]
+result = []
+for name in file_name:
+    file_path = "/user/hm74/NYCColumns/" + name
+    neighbor = sc.textFile(file_path, 1).mapPartitions(lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+    neighbor = neighbor.map(lambda x: x[0]).collect()
+    for neigh_name in neighbor:
+        if neigh_name not in result:
+            result.append(neigh_name)
+print("neighborhood name:")
+print(result)
+neigh_result = ['arrochar-shore acres', 'dongan hills', 'grant city', 'grymes hill',
           'new springville', 'rosebank', 'silver lake', 'sunnyside', 'tompkinsville',
           'bedford park/norwood', 'belmont', 'bronxdale', 'city island', 'east tremont',
           'highbridge/morris heights', 'kingsbridge/jerome park', 'morris park/van nest',
@@ -39,6 +73,21 @@ neighborhood_name = ['arrochar-shore acres', 'dongan hills', 'grant city', 'grym
           'williamsburg-east', 'williamsburg-north', 'williamsburg-south',
           'windsor terrace', 'wyckoff heights', 'hillcrest', 'jamaica']
 
+
+# area of insterests
+
+file_name = ["i9pf-sj7c.INTEREST.txt.gz", "vw9i-7mzq.interest4.txt.gz",
+             "ge8j-uqbf.interest.txt.gz"]
+result = []
+for name in file_name:
+    file_path = "/user/hm74/NYCColumns/" + name
+    interest = sc.textFile(file_path, 1).mapPartitions(lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+    interest = interest.map(lambda x: x[0]).collect()
+    for area in interest:
+        if area not in result:
+            result.append(area)
+print(" area of interest and study")
+print(result)
 interest = ['animal science', 'architecture', 'business', 'communications',
             'computer science & technology', 'cosmetology', 'culinary arts',
             'engineering', 'environmental science', 'film/video', 'health professions',
@@ -47,13 +96,39 @@ interest = ['animal science', 'architecture', 'business', 'communications',
             'performing arts/visual art & design', 'science & math', 'teaching',
             'visual art & design', 'zoned']
 
-borough = ['brooklyn', 'manhattan', 'bronx', 'staten island', 'queens', 'k', 'r', 'm', 'x', 'q']
+# agency code
+file_name = ["sa5w-dn2t.Agency.txt.gz", "7jkp-5w5g.Agency.txt.gz",
+             "i5ef-jxv3.Agency.txt.gz"]
+result = []
+for name in file_name:
+    file_path = "/user/hm74/NYCColumns/" + name
+    agency = sc.textFile(file_path, 1).mapPartitions(lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+    agency = agency.map(lambda x: x[0]).collect()
+    for id in agency:
+        if id not in result:
+            result.append(id)
+print(" agency id")
+print(result)
+
 agency = ['311', 'acs', 'bic', 'boe', 'bpl', 'cchr', 'ccrb', 'cuny', 'dca',
           'dcas', 'dcla', 'dcp', 'ddc', 'dep', 'dfta', 'dhs', 'dob', 'doc',
           'doe', 'dof', 'dohmh', 'doi', 'doitt', 'dop', 'doris', 'dot', 'dpr',
           'dsny', 'dvs', 'dycd', 'fdny', 'hpd', 'hra', 'law', 'lpc', 'nycem',
           'nycha', 'nychh', 'nypd', 'nypl', 'oath', 'qpl', 'sbs', 'sca', 'tlc',
           'edc', 'nypl-research', 'ocme']
+
+
+result = []
+file_name = "sqmu-2ixd.Agency_Name.txt.gz"
+file_path = "/user/hm74/NYCColumns/" + file_name
+agency_name = sc.textFile(file_path, 1).mapPartitions(lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+agency_name = agency_name.map(lambda x: x[0]).collect()
+for name in agency_name:
+    if name not in result:
+        result.append(name)
+print("agency name are :")
+print(result)
+
 agency_name = ['admin. for children services', 'board of correction', 'board of elections',
                'brooklyn public library', 'business integrity commission', 'campaign finance board',
                'city clerk', 'city council', 'city university', 'citywide pension contributions',
@@ -80,77 +155,4 @@ agency_name = ['admin. for children services', 'board of correction', 'board of 
                'public administrator - n.y.', 'public administrator - queens', 'public administrator -richmond',
                'public administrator- brooklyn', 'public advocate', 'queens borough public library',
                'taxi & limousine commission', 'youth & community development']
-def levenshtein(seq1, seq2):
-    size_x = len(seq1) + 1
-    size_y = len(seq2) + 1
-    matrix = np.zeros ((size_x, size_y))
-    for x in range(size_x):
-        matrix [x, 0] = x
-    for y in range(size_y):
-        matrix [0, y] = y
-    for x in range(1, size_x):
-        for y in range(1, size_y):
-            if seq1[x-1] == seq2[y-1]:
-                matrix [x,y] = min(
-                    matrix[x-1, y] + 1,
-                    matrix[x-1, y-1],
-                    matrix[x, y-1] + 1
-                )
-            else:
-                matrix [x,y] = min(
-                    matrix[x-1,y] + 1,
-                    matrix[x-1,y-1] + 1,
-                    matrix[x,y-1] + 1
-                )
-    #print (matrix)
-    return (matrix[size_x - 1, size_y - 1])
->>>>>>> UPDATE: part two, type with list
 
-def get_semantic_type(line):
-    if re.match("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", line) is not None:
-        return "WebSites"
-    elif line in school_level:
-        return "School Level"
-    elif line in borough:
-        return "Borough"
-    elif line in neighborhood_name:
-        return "Neighborhood"
-    elif line in interest:
-        return "Area Of Study"
-    elif line in agency:
-        return "Agency"
-    elif line in agency_name:
-        return "Agency Name"
-    elif re.match("(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}", line) is not None:
-        return "Phone Number"
-    elif re.match("\(\d+, \d+\)", line) is not None:
-        return "LAT/LON coordinates"
-    elif re.match("r\d[-(0-9a-z)]+", line) is not None:
-        return "Building Classification"
-    return "Others"
-
-
-def semanticCheck(sc, file_name):
-    file_name = file_name.strip()[1:-1]
-    file_path = "/user/hm74/NYCColumns/" + str(file_name)
-    data = sc.textFile(file_path, 1).mapPartitions(
-        lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
-    # key is semantic type, value is count
-    semantic_information = {}
-    semantic_type = data.map(lambda x: (get_semantic_type(
-        x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y).collect()
-    for row in semantic_type:
-        semantic_information["semantic_type"] = row[0]
-        semantic_information["count"] = row[1]
-    with open(file_name+'_semantic_result.json', 'w') as fp:
-        json.dump({"semantic_types": semantic_information}, fp)
-
-
-sc = SparkContext()
-
-file_list = open('cluster3.txt').readline().strip().replace(' ', '').split(",")
-
-for item in file_list[1:10]:
-    semanticCheck(sc, item)
-#for i in range(5):
-#    semanticCheck(sc, file_list[i])
