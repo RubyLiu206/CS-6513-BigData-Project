@@ -11,7 +11,7 @@ def get_type(data):
         return "REAL"
     elif re.match("^\s*-?[0-9]{1,10}\s*$", data) is not None:
         return "INTEGER (LONG)"
-    elif re.match('^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9]):([0-5]?[0-9])$', data) is not None or re.match('[0-9]{2}/[0-9]{2}/[0-9]{4}', data) is not None:
+    elif re.match('^(([0-1][0-9])|([2][0-3])):([0-5][0-9]):([0-5][0-9])$', data) is not None or re.match('[0-9]{2}/[0-9]{2}/[0-9]{4}', data) is not None:
         return "DATE/TIME"
     else:
         return "TEXT"
