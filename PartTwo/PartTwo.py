@@ -3,14 +3,53 @@ import numpy as np
 import json
 import re
 import csv
+import pandas as pd
 from pyspark import SparkContext
+#from pyspark.sql.functions import levenshtein
+from sklearn.metrics.pairwise import cosine_distances
+from sklearn.metrics.pairwise import cosine_similarity
+from nltk.corpus import stopwords
+stopwords = stopwords.words('english')
+from difflib import SequenceMatcher
 
 # change get_semantic_type function to add more semantic types
-<<<<<<< HEAD
-school_level = ['k-2', 'elementary', 'elementary school', 'middle']
-borough = ['brooklyn', 'manhattan', 'bronx', 'staten island', 'queens']
+"""
+type we need verified:
+[person_name, business_name, phone_number, address, street_name, city, 
+neighborhood, lat_lon_cord, zip_code, borough, school_name, 
+color, car_make, city_agency, area_of_study, subject_in_school, 
+school_level, college_name, website, building_classification, vehicle_type, 
+location_type, park_playground, other]
 
-=======
+
+we have done yet:
+zip_code, phone_number, address, street_name, neighborhood, lat_lon_cord, borough, 
+city_agency, area_of_study, subject_in_school, school_level, website, building_classification,
+
+
+
+we should do:
+the way we deal with name: just read the column name, if contain the last name, first name or other
+person_name, business_name, school_name, college_name,
+go through each data, and find the empty label to other
+
+
+tough: city, color, car_make, park_playground,
+
+
+actudally we don't have column with location_type, 
+
+
+"""
+
+subject = ['-', 'english', 'math', 'science', 'social studies', 'algebra',
+           'assumed team teaching', 'chemistry', 'earth science', 'economics',
+           'english 10', 'english 11', 'english 12', 'english 9', 'geometry',
+           'global history 10', 'global history 9', 'living environment',
+           'matched sections', 'math a', 'math b', 'other', 'physics', 'us government',
+           'us government & economics', 'us history']
+street_name = ['avenue', 'place', 'street', 'st', 'court']
+park_playground = ['park', 'playground']
 school_level = ['elementary', 'high school', 'high school transfer', 'k-2',
                 'k-3', 'k-8', 'middle', 'yabc', 'elementary school', 'k-8 school',
                 'middle school', 'transfer school', 'transfer high school', 'd75']
@@ -80,6 +119,14 @@ agency_name = ['admin. for children services', 'board of correction', 'board of 
                'public administrator - n.y.', 'public administrator - queens', 'public administrator -richmond',
                'public administrator- brooklyn', 'public advocate', 'queens borough public library',
                'taxi & limousine commission', 'youth & community development']
+
+vehicel_type = ['2 dr sedan', 'ambulance', 'bicycle', 'bike', 'box truck', 'bu', 'bus', 'carry all', 'convertible',
+                'dp', 'ds', 'fb', 'fire truck', 'garbage or refuse', 'gg', 'large com veh(6 or more tires)',
+                'livery vehicle', 'll', 'motorcycle', 'ms', 'other', 'passenger vehicle', 'pedicab', 'pick-up truck',
+                'scooter', 'sedan', 'small com veh(4 tires)', 'sport utility / station wagon',
+                'station wagon/sport utility vehicle', 'taxi', 'tk', 'tow truck / wrecker', 'tract', 'tractor truck diesel',
+                'trail', 'trl', 'unknown', 'van', 'wagon']
+
 def levenshtein(seq1, seq2):
     size_x = len(seq1) + 1
     size_y = len(seq2) + 1
@@ -104,35 +151,70 @@ def levenshtein(seq1, seq2):
                 )
     #print (matrix)
     return (matrix[size_x - 1, size_y - 1])
->>>>>>> UPDATE: part two, type with list
+
+def cosine_sim_vectors(vec1, vec2):
+    vec1 = vec1.reshape(1,-1)
+    vec2 = vec2.reshape(1, -1)
+    return cosine_similarity(vec1, vec2)[0][0]
+
 
 def get_semantic_type(line):
+    # checking with regular expression first, which is the most efficiency
     if re.match("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", line) is not None:
         return "WebSites"
-    elif line in school_level:
-        return "School Level"
-    elif line in borough:
-        return "Borough"
-    elif line in neighborhood_name:
-        return "Neighborhood"
-    elif line in interest:
-        return "Area Of Study"
-    elif line in agency:
-        return "Agency"
-    elif line in agency_name:
-        return "Agency Name"
     elif re.match("(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}", line) is not None:
         return "Phone Number"
     elif re.match("\(\d+, \d+\)", line) is not None:
         return "LAT/LON coordinates"
     elif re.match("r\d[-(0-9a-z)]+", line) is not None:
         return "Building Classification"
+    elif re.match("(?!0{5})(\d{5})(?!-?0{4})(|-\d{4})?", line) is not None:
+        return "Zip_code"
+    elif line in borough:
+        return "Borough"
+    elif line in school_level:
+        return "School_Level"
+    elif line in vehicel_type:
+        return "Vehicel_Type"
+    # checking with the list, from the smallest one
+    else:
+        for data in street_name:
+            line_split = line.split(" ")
+            if data in line_split:
+                return "Street"
+        for data in interest:
+            #s = SequenceMatcher(None, line, data)
+            if levenshtein(line, data) <=2:
+                return "Area_Of_Study"
+        for data in subject:
+            #s = SequenceMatcher(None, line, data)
+            if levenshtein(line, data) <=2:
+                return "Subject"
+        for data in agency:
+            #s = SequenceMatcher(None, line, data)
+            if levenshtein(line, data) <=2:
+                return "Agency"
+        for data in agency_name:
+            #s = SequenceMatcher(None, line, data)
+            if levenshtein(line, data) <=2:
+                return "City_Agency"
+        for data in neighborhood_name:
+            #s = SequenceMatcher(None, line, data)
+            if levenshtein(line, data) <=2:
+                return "Neighborhood"
     return "Others"
 
 
 def semanticCheck(sc, file_name):
     file_name = file_name.strip()[1:-1]
     file_path = "/user/hm74/NYCColumns/" + str(file_name)
+    """
+    separate_name = file_name.split("_")
+    if "name" in separate_name:
+        data = sc.textFile(file_path, 1).mapPartitions(
+            lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+        
+    """
     data = sc.textFile(file_path, 1).mapPartitions(
         lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
     # key is semantic type, value is count
@@ -144,13 +226,41 @@ def semanticCheck(sc, file_name):
         semantic_information["count"] = row[1]
     with open(file_name+'_semantic_result.json', 'w') as fp:
         json.dump({"semantic_types": semantic_information}, fp)
+    print(semantic_information['semantic_type'])
+    return semantic_information['semantic_type']
+
+def name_Check(sc,file_name):
+    file_name = file_name.strip()[1:-1]
+    file_path = "/user/hm74/NYCColumns/" + str(file_name)
+    data = sc.textFile(file_path, 1).mapPartitions(
+        lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+    print("Name")
+    semantic_information = {}
+    semantic_type = data.map(lambda x: ("Name", int(x[1]))).reduceByKey(lambda x, y: x + y).collect()
+    with open(file_name+'_semantic_result.json', 'w') as fp:
+        json.dump({"semantic_types": "Name"}, fp)
+    return "Name"
 
 
 sc = SparkContext()
 
 file_list = open('cluster3.txt').readline().strip().replace(' ', '').split(",")
 
-for item in file_list[1:10]:
-    semanticCheck(sc, item)
+for item in file_list[0:10]:
+    column_name = item.split(".")
+    column_name = column_name[1].split("_")
+    test_name = []
+    for i in column_name:
+        if not i.isdigit():
+            test_name.append(i)
+    test_name = ''.join(test_name)
+    name = []
+    for col in column_name:
+        name.append(col.lower())
+    if "name" in test_name:
+        label = name_Check(sc,item)
+    else:
+        label = semanticCheck(sc, item)
 #for i in range(5):
-#    semanticCheck(sc, file_list[i])
+#    semanticCheck(sc, file_list[i])label
+

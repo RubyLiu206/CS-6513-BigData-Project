@@ -155,4 +155,55 @@ agency_name = ['admin. for children services', 'board of correction', 'board of 
                'public administrator - n.y.', 'public administrator - queens', 'public administrator -richmond',
                'public administrator- brooklyn', 'public advocate', 'queens borough public library',
                'taxi & limousine commission', 'youth & community development']
+# vehicle type
+result = []
+file_name = ["h9gi-nx95.VEHICLE_TYPE_CODE_3.txt.gz", "h9gi-nx95.VEHICLE_TYPE_CODE_2.txt.gz",
+             "h9gi-nx95.VEHICLE_TYPE_CODE_1.txt.gz", "h9gi-nx95.VEHICLE_TYPE_CODE_4.txt.gz",
+             "h9gi-nx95.VEHICLE_TYPE_CODE_5.txt.gz"]
 
+file_name = ["h9gi-nx95.VEHICLE_TYPE_CODE_5.txt.gz"]
+for name in file_name:
+    file_path = "/user/hm74/NYCColumns/" + name
+    vehicel_type = sc.textFile(file_path, 1).mapPartitions(lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+    vehicel_type = vehicel_type.map(lambda x: x[0]).collect()
+    for name in vehicel_type:
+        if name not in result:
+            result.append(name)
+print("vehicel_type name are :")
+print(result)
+vehicel_type = ['2 dr sedan', 'ambulance', 'bicycle', 'bike', 'box truck', 'bu', 'bus', 'carry all', 'convertible',
+                'dp', 'ds', 'fb', 'fire truck', 'garbage or refuse', 'gg', 'large com veh(6 or more tires)',
+                'livery vehicle', 'll', 'motorcycle', 'ms', 'other', 'passenger vehicle', 'pedicab', 'pick-up truck',
+                'scooter', 'sedan', 'small com veh(4 tires)', 'sport utility / station wagon',
+                'station wagon/sport utility vehicle', 'taxi', 'tk', 'tow truck / wrecker', 'tract', 'tractor truck diesel',
+                'trail', 'trl', 'unknown', 'van', 'wagon']
+
+
+
+# park facility
+
+file_name = ["erm2-nwe9.Park_Facility_Name.txt.gz"]
+
+
+# core subject
+file_name = ["ub9e-s7ai.CORE_SUBJECT___MS_CORE_and__09_12_ONLY_.txt.gz",
+             "sybh-s59s.CORE_SUBJECT___MS_CORE_and__9_12_ONLY_.txt.gz",
+             "6wcu-cfa3.CORE_COURSE__MS_CORE_and_9_12_ONLY_.txt.gz",
+             "d3ge-anaz.CORE_COURSE__MS_CORE_and_9_12_ONLY_.txt.gz"]
+result = []
+for name in file_name:
+    file_path = "/user/hm74/NYCColumns/" + name
+    subject = sc.textFile(file_path, 1).mapPartitions(lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
+    subject = subject.map(lambda x: x[0]).collect()
+    for name in subject:
+        if name not in result:
+            result.append(name)
+print("subject name are :")
+print(result)
+
+subject = ['-', 'english', 'math', 'science', 'social studies', 'algebra',
+           'assumed team teaching', 'chemistry', 'earth science', 'economics',
+           'english 10', 'english 11', 'english 12', 'english 9', 'geometry',
+           'global history 10', 'global history 9', 'living environment',
+           'matched sections', 'math a', 'math b', 'other', 'physics', 'us government',
+           'us government & economics', 'us history']
