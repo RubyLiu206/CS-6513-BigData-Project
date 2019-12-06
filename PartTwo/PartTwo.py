@@ -202,13 +202,6 @@ def get_semantic_type(line):
 def semanticCheck(sc, file_name, true_type):
     file_name = file_name.strip()[1:-1]
     file_path = "/user/hm74/NYCColumns/" + str(file_name)
-    """
-    separate_name = file_name.split("_")
-    if "name" in separate_name:
-        data = sc.textFile(file_path, 1).mapPartitions(
-            lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
-        
-    """
     data = sc.textFile(file_path, 1).mapPartitions(
         lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
     # key is semantic type, value is count
@@ -265,6 +258,11 @@ for item in file_list[0:10]:
     for col in column_name:
         name.append(col.lower())
     if "name" in test_name:
+        if "street" in test_name:
+            label = semanticCheck(sc, item, true_type)
+        elif "business" in test_name:
+            label = semanticCheck(sc, item, true_type)
+
         label = name_Check(sc,item, true_type)
     else:
         label = semanticCheck(sc, item, true_type)
