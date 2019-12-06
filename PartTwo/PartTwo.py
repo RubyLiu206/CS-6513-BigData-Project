@@ -127,6 +127,24 @@ vehicel_type = ['2 dr sedan', 'ambulance', 'bicycle', 'bike', 'box truck', 'bu',
                 'station wagon/sport utility vehicle', 'taxi', 'tk', 'tow truck / wrecker', 'tract', 'tractor truck diesel',
                 'trail', 'trl', 'unknown', 'van', 'wagon']
 
+type_dict = {}
+for item in subject:
+    type_dict[item] = "subject"
+for item in school_level:
+    type_dict[item] = "school_level"
+for item in neighborhood_name:
+    type_dict[item] = "neighborhood_name"
+for item in interest:
+    type_dict[item] = "interest"
+for item in borough:
+    type_dict[item] = "borough"
+for item in agency:
+    type_dict[item] = "agency"
+for item in agency_name:
+    type_dict[item] = "agency_name"
+for item in vehicel_type:
+    type_dict[item] = "vehicel_type"
+
 def levenshtein(seq1, seq2):
     size_x = len(seq1) + 1
     size_y = len(seq2) + 1
@@ -170,38 +188,14 @@ def get_semantic_type(line):
         return "Building Classification"
     elif re.match("(?!0{5})(\d{5})(?!-?0{4})(|-\d{4})?", line) is not None:
         return "Zip_code"
-    elif line in borough:
-        return "Borough"
-    elif line in school_level:
-        return "School_Level"
-    elif line in vehicel_type:
-        return "Vehicel_Type"
+    elif type_dict.get(line) is not borough:
+        return type_dict.get(line)
     # checking with the list, from the smallest one
     else:
         for data in street_name:
             line_split = line.split(" ")
             if data in line_split:
                 return "Street"
-        for data in interest:
-            #s = SequenceMatcher(None, line, data)
-            if levenshtein(line, data) <=2:
-                return "Area_Of_Study"
-        for data in subject:
-            #s = SequenceMatcher(None, line, data)
-            if levenshtein(line, data) <=2:
-                return "Subject"
-        for data in agency:
-            #s = SequenceMatcher(None, line, data)
-            if levenshtein(line, data) <=2:
-                return "Agency"
-        for data in agency_name:
-            #s = SequenceMatcher(None, line, data)
-            if levenshtein(line, data) <=2:
-                return "City_Agency"
-        for data in neighborhood_name:
-            #s = SequenceMatcher(None, line, data)
-            if levenshtein(line, data) <=2:
-                return "Neighborhood"
     return "Others"
 
 
