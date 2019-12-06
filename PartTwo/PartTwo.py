@@ -199,7 +199,7 @@ def get_semantic_type(line):
     return "Others"
 
 
-def semanticCheck(sc, file_name):
+def semanticCheck(sc, file_name, true_type):
     file_name = file_name.strip()[1:-1]
     file_path = "/user/hm74/NYCColumns/" + str(file_name)
     """
@@ -223,7 +223,7 @@ def semanticCheck(sc, file_name):
     print(semantic_information['semantic_type'])
     return semantic_information['semantic_type']
 
-def name_Check(sc,file_name):
+def name_Check(sc,file_name, true_type):
     file_name = file_name.strip()[1:-1]
     file_path = "/user/hm74/NYCColumns/" + str(file_name)
     data = sc.textFile(file_path, 1).mapPartitions(
@@ -236,11 +236,24 @@ def name_Check(sc,file_name):
     return "Name"
 
 
+# match with the csv get the true type
+def read_in_true_label(name, df):
+    for row in df:
+        if row[0].replace("'",'') == name:
+            return row[1]
+
 sc = SparkContext()
 
+
 file_list = open('cluster3.txt').readline().strip().replace(' ', '').split(",")
+#get the true type csv
+with open("true_type.csv", 'r') as csvfile:
+    reader = csv.DictReader(csvfile)
+    column = [[row['file'],row['true_type']] for row in reader]
+
 
 for item in file_list[0:10]:
+    true_type = read_in_true_label(item, column)
     column_name = item.split(".")
     column_name = column_name[1].split("_")
     test_name = []
@@ -252,9 +265,9 @@ for item in file_list[0:10]:
     for col in column_name:
         name.append(col.lower())
     if "name" in test_name:
-        label = name_Check(sc,item)
+        label = name_Check(sc,item, true_type)
     else:
-        label = semanticCheck(sc, item)
+        label = semanticCheck(sc, item, true_type)
 #for i in range(5):
 #    semanticCheck(sc, file_list[i])label
 
