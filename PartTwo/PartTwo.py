@@ -210,6 +210,11 @@ def get_semantic_type(line):
             line_split = line.split(" ")
             if data in line_split:
                 return "street_name"
+
+        for data in park_playground:
+            line_split = line.split(" ")
+            if data in line_split:
+                return "park_playground"
     return "other"
 
 
@@ -232,7 +237,8 @@ def semanticCheck(sc, file_name, true_type):
     print(semantic_information['semantic_type'])
     return semantic_information['semantic_type']
 
-def name_Check(sc,file_name, true_type):
+
+def name_Check(sc, file_name, true_type):
     file_name = file_name.strip()[1:-1]
     file_path = "/user/hm74/NYCColumns/" + str(file_name)
     data = sc.textFile(file_path, 1).mapPartitions(
@@ -248,18 +254,20 @@ def name_Check(sc,file_name, true_type):
 
 # match with the csv get the true type
 def read_in_true_label(name, df):
+    name = name.replace("'", '')
     for row in df:
-        if row[0].replace("'",'') == name:
+        if row[0].replace("'", '') == name:
             return row[1]
+
 
 sc = SparkContext()
 
 
 file_list = open('cluster3.txt').readline().strip().replace(' ', '').split(",")
-#get the true type csv
+# get the true type csv
 with open("true_type.csv", 'r') as csvfile:
     reader = csv.DictReader(csvfile)
-    column = [[row['file'],row['true_type']] for row in reader]
+    column = [[row['file'], row['true_type']] for row in reader]
 
 
 for item in file_list[0:10]:
@@ -280,8 +288,8 @@ for item in file_list[0:10]:
         elif "business" in test_name:
             label = semanticCheck(sc, item, true_type)
 
-        label = name_Check(sc,item, true_type)
+        label = name_Check(sc, item, true_type)
     else:
         label = semanticCheck(sc, item, true_type)
-#for i in range(5):
+# for i in range(5):
 #    semanticCheck(sc, file_list[i])label
