@@ -1,3 +1,4 @@
+from difflib import SequenceMatcher
 import sys
 import numpy as np
 import json
@@ -10,7 +11,6 @@ from sklearn.metrics.pairwise import cosine_distances
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.corpus import stopwords
 stopwords = stopwords.words('english')
-from difflib import SequenceMatcher
 
 # change get_semantic_type function to add more semantic types
 """
@@ -25,7 +25,6 @@ location_type, park_playground, other]
 we have done yet:
 zip_code, phone_number, address, street_name, neighborhood, lat_lon_cord, borough, 
 city_agency, area_of_study, subject_in_school, school_level, website, building_classification,
-
 
 
 we should do:
@@ -54,29 +53,29 @@ school_level = ['elementary', 'high school', 'high school transfer', 'k-2',
                 'k-3', 'k-8', 'middle', 'yabc', 'elementary school', 'k-8 school',
                 'middle school', 'transfer school', 'transfer high school', 'd75']
 neighborhood_name = ['arrochar-shore acres', 'dongan hills', 'grant city', 'grymes hill',
-          'new springville', 'rosebank', 'silver lake', 'sunnyside', 'tompkinsville',
-          'bedford park/norwood', 'belmont', 'bronxdale', 'city island', 'east tremont',
-          'highbridge/morris heights', 'kingsbridge/jerome park', 'morris park/van nest',
-          'morrisania/longwood', 'mott haven/port morris', 'parkchester',
-          'pelham parkway south', 'riverdale', 'schuylerville/pelham bay', 'soundview',
-          'throgs neck', 'williamsbridge', 'airport la guardia', 'astoria', 'bayside',
-          'briarwood', 'college point', 'corona', 'elmhurst', 'far rockaway',
-          'flushing meadow park', 'flushing-north', 'flushing-south', 'forest hills',
-          'glendale', 'hammels', 'howard beach', 'jackson heights', 'jamaica estates',
-          'kew gardens', 'little neck', 'long island city', 'maspeth', 'middle village',
-          'oakland gardens', 'ozone park', 'rego park', 'ridgewood', 'rockaway park',
-          'south ozone park', 'whitestone', 'woodhaven', 'woodside', 'bath beach',
-          'bay ridge', 'bedford stuyvesant', 'bensonhurst', 'boerum hill', 'borough park',
-          'brighton beach', 'brooklyn heights', 'bushwick', 'canarsie', 'carroll gardens',
-          'clinton hill', 'cobble hill', 'cobble hill-west', 'crown heights',
-          'downtown-fulton ferry', 'downtown-fulton mall', 'downtown-metrotech',
-          'dyker heights', 'east new york', 'flatbush-central', 'flatbush-east',
-          'flatbush-lefferts garden', 'flatbush-north', 'fort greene', 'gowanus',
-          'gravesend', 'greenpoint', 'kensington', 'madison', 'midwood', 'mill basin',
-          'ocean hill', 'ocean parkway-north', 'park slope', 'park slope south',
-          'prospect heights', 'sheepshead bay', 'sunset park', 'williamsburg-central',
-          'williamsburg-east', 'williamsburg-north', 'williamsburg-south',
-          'windsor terrace', 'wyckoff heights', 'hillcrest', 'jamaica']
+                     'new springville', 'rosebank', 'silver lake', 'sunnyside', 'tompkinsville',
+                     'bedford park/norwood', 'belmont', 'bronxdale', 'city island', 'east tremont',
+                     'highbridge/morris heights', 'kingsbridge/jerome park', 'morris park/van nest',
+                     'morrisania/longwood', 'mott haven/port morris', 'parkchester',
+                     'pelham parkway south', 'riverdale', 'schuylerville/pelham bay', 'soundview',
+                     'throgs neck', 'williamsbridge', 'airport la guardia', 'astoria', 'bayside',
+                     'briarwood', 'college point', 'corona', 'elmhurst', 'far rockaway',
+                     'flushing meadow park', 'flushing-north', 'flushing-south', 'forest hills',
+                     'glendale', 'hammels', 'howard beach', 'jackson heights', 'jamaica estates',
+                     'kew gardens', 'little neck', 'long island city', 'maspeth', 'middle village',
+                     'oakland gardens', 'ozone park', 'rego park', 'ridgewood', 'rockaway park',
+                     'south ozone park', 'whitestone', 'woodhaven', 'woodside', 'bath beach',
+                     'bay ridge', 'bedford stuyvesant', 'bensonhurst', 'boerum hill', 'borough park',
+                     'brighton beach', 'brooklyn heights', 'bushwick', 'canarsie', 'carroll gardens',
+                     'clinton hill', 'cobble hill', 'cobble hill-west', 'crown heights',
+                     'downtown-fulton ferry', 'downtown-fulton mall', 'downtown-metrotech',
+                     'dyker heights', 'east new york', 'flatbush-central', 'flatbush-east',
+                     'flatbush-lefferts garden', 'flatbush-north', 'fort greene', 'gowanus',
+                     'gravesend', 'greenpoint', 'kensington', 'madison', 'midwood', 'mill basin',
+                     'ocean hill', 'ocean parkway-north', 'park slope', 'park slope south',
+                     'prospect heights', 'sheepshead bay', 'sunset park', 'williamsburg-central',
+                     'williamsburg-east', 'williamsburg-north', 'williamsburg-south',
+                     'windsor terrace', 'wyckoff heights', 'hillcrest', 'jamaica']
 
 interest = ['animal science', 'architecture', 'business', 'communications',
             'computer science & technology', 'cosmetology', 'culinary arts',
@@ -86,7 +85,8 @@ interest = ['animal science', 'architecture', 'business', 'communications',
             'performing arts/visual art & design', 'science & math', 'teaching',
             'visual art & design', 'zoned']
 
-borough = ['brooklyn', 'manhattan', 'bronx', 'staten island', 'queens', 'k', 'r', 'm', 'x', 'q']
+borough = ['brooklyn', 'manhattan', 'bronx',
+           'staten island', 'queens', 'k', 'r', 'm', 'x', 'q']
 agency = ['311', 'acs', 'bic', 'boe', 'bpl', 'cchr', 'ccrb', 'cuny', 'dca',
           'dcas', 'dcla', 'dcp', 'ddc', 'dep', 'dfta', 'dhs', 'dob', 'doc',
           'doe', 'dof', 'dohmh', 'doi', 'doitt', 'dop', 'doris', 'dot', 'dpr',
@@ -127,51 +127,64 @@ vehicel_type = ['2 dr sedan', 'ambulance', 'bicycle', 'bike', 'box truck', 'bu',
                 'station wagon/sport utility vehicle', 'taxi', 'tk', 'tow truck / wrecker', 'tract', 'tractor truck diesel',
                 'trail', 'trl', 'unknown', 'van', 'wagon']
 
+car_make = ['acura', 'alfa romeo', 'am general', 'aston martin', 'audi', 'avanti motors', 'bentley', 'bmw', 'bugatti',
+            'buick', 'cadillac', 'chevrolet', 'chrysler', 'daewoo', 'daihatsu', 'dodge', 'eagle', 'ferrari', 'fiat',
+            'fisker', 'ford', 'genesis', 'geo', 'gmc', 'honda', 'hummer', 'hyundai', 'infiniti', 'international', 'isuzu',
+            'jaguar', 'jeep', 'karma', 'kia', 'koenigsegg', 'lamborghini', 'land rover', 'lexus', 'lincoin', 'lotus',
+            'maserati', 'maybach', 'mazda', 'mclaren', 'mercedes-benz', 'mercury', 'mini', 'mitsubishi', 'morgan', 'nissan',
+            'oldsmobile', 'panoz', 'peugeot', 'plymouth', 'pontiac', 'porsche', 'qvale', 'ram', 'rolls-royce', 'saab', 'saleen',
+            'saturn', 'scion', 'smart', 'spyker', 'sterling', 'subaru', 'suzuki', 'tesla', 'toyota', 'volkswagen', 'volvo', 'yugo',
+            'benz', 'mercedes', 'lambo', 'avanti', 'chevy']
+
 type_dict = {}
 for item in subject:
-    type_dict[item] = "subject"
+    type_dict[item] = "subject_in_school"
 for item in school_level:
     type_dict[item] = "school_level"
 for item in neighborhood_name:
-    type_dict[item] = "neighborhood_name"
+    type_dict[item] = "neighborhood"
 for item in interest:
-    type_dict[item] = "interest"
+    type_dict[item] = "area_of_study"
 for item in borough:
     type_dict[item] = "borough"
 for item in agency:
-    type_dict[item] = "agency"
+    type_dict[item] = "city_agency"
 for item in agency_name:
-    type_dict[item] = "agency_name"
+    type_dict[item] = "city_agency"
 for item in vehicel_type:
     type_dict[item] = "vehicel_type"
+for item in car_make:
+    type_dict[item] = "car_make"
+
 
 def levenshtein(seq1, seq2):
     size_x = len(seq1) + 1
     size_y = len(seq2) + 1
-    matrix = np.zeros ((size_x, size_y))
+    matrix = np.zeros((size_x, size_y))
     for x in range(size_x):
-        matrix [x, 0] = x
+        matrix[x, 0] = x
     for y in range(size_y):
-        matrix [0, y] = y
+        matrix[0, y] = y
     for x in range(1, size_x):
         for y in range(1, size_y):
             if seq1[x-1] == seq2[y-1]:
-                matrix [x,y] = min(
+                matrix[x, y] = min(
                     matrix[x-1, y] + 1,
                     matrix[x-1, y-1],
                     matrix[x, y-1] + 1
                 )
             else:
-                matrix [x,y] = min(
-                    matrix[x-1,y] + 1,
-                    matrix[x-1,y-1] + 1,
-                    matrix[x,y-1] + 1
+                matrix[x, y] = min(
+                    matrix[x-1, y] + 1,
+                    matrix[x-1, y-1] + 1,
+                    matrix[x, y-1] + 1
                 )
     #print (matrix)
     return (matrix[size_x - 1, size_y - 1])
 
+
 def cosine_sim_vectors(vec1, vec2):
-    vec1 = vec1.reshape(1,-1)
+    vec1 = vec1.reshape(1, -1)
     vec2 = vec2.reshape(1, -1)
     return cosine_similarity(vec1, vec2)[0][0]
 
@@ -179,24 +192,25 @@ def cosine_sim_vectors(vec1, vec2):
 def get_semantic_type(line):
     # checking with regular expression first, which is the most efficiency
     if re.match("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", line) is not None:
-        return "WebSites"
+        return "website"
     elif re.match("(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}", line) is not None:
-        return "Phone Number"
+        return "phone_number"
     elif re.match("\(\d+, \d+\)", line) is not None:
-        return "LAT/LON coordinates"
+        return "lat_lon_cord"
     elif re.match("r\d[-(0-9a-z)]+", line) is not None:
-        return "Building Classification"
+        return "building_classification"
     elif re.match("(?!0{5})(\d{5})(?!-?0{4})(|-\d{4})?", line) is not None:
-        return "Zip_code"
-    elif type_dict.get(line) is not borough:
+        return "zip_code"
+    # checking with dictionary
+    elif type_dict.get(line) is not None:
         return type_dict.get(line)
     # checking with the list, from the smallest one
     else:
         for data in street_name:
             line_split = line.split(" ")
             if data in line_split:
-                return "Street"
-    return "Others"
+                return "street_name"
+    return "other"
 
 
 def semanticCheck(sc, file_name):
@@ -223,14 +237,16 @@ def semanticCheck(sc, file_name):
     print(semantic_information['semantic_type'])
     return semantic_information['semantic_type']
 
-def name_Check(sc,file_name):
+
+def name_Check(sc, file_name):
     file_name = file_name.strip()[1:-1]
     file_path = "/user/hm74/NYCColumns/" + str(file_name)
     data = sc.textFile(file_path, 1).mapPartitions(
         lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
     print("Name")
     semantic_information = {}
-    semantic_type = data.map(lambda x: ("Name", int(x[1]))).reduceByKey(lambda x, y: x + y).collect()
+    semantic_type = data.map(lambda x: ("Name", int(x[1]))).reduceByKey(
+        lambda x, y: x + y).collect()
     with open(file_name+'_semantic_result.json', 'w') as fp:
         json.dump({"semantic_types": "Name"}, fp)
     return "Name"
@@ -252,9 +268,8 @@ for item in file_list[0:10]:
     for col in column_name:
         name.append(col.lower())
     if "name" in test_name:
-        label = name_Check(sc,item)
+        label = name_Check(sc, item)
     else:
         label = semanticCheck(sc, item)
-#for i in range(5):
+# for i in range(5):
 #    semanticCheck(sc, file_list[i])label
-
