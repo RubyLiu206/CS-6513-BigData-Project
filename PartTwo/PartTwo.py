@@ -224,6 +224,8 @@ def semanticCheck(sc, file_name, true_type):
         x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y).collect()
     for row in semantic_type:
         semantic_information["semantic_type"] = row[0]
+        if (row[0] == "other"):
+            semantic_information["label"] = true_type
         semantic_information["count"] = row[1]
     with open(file_name+'_semantic_result.json', 'w') as fp:
         json.dump({"semantic_types": semantic_information}, fp)
