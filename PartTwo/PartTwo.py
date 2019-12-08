@@ -228,7 +228,7 @@ def get_semantic_type(line):
         return "phone_number"
     elif re.match("\(\d+.?\d*, -?\d+.?\d*\)", line) is not None:
         return "lat_lon_cord"
-    elif re.match("\w\d[-(0-9a-z)]+", line) is not None:
+    elif re.match("[a-z]\d[-(0-9a-z)]+", line) is not None:
         return "building_classification"
     elif re.match("(?!0{5})(\d{5})(?!-?0{4})(|-\d{4})?", line) is not None:
         return "zip_code"
@@ -269,7 +269,7 @@ def semanticCheck(sc, file_name, true_type):
     semantic_type = data.map(lambda x: (get_semantic_type(
         x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y)
     # [type, count]
-    if true_type in ["street_name", "business_name", "name"]:
+    if true_type in ["street_name", "business_name", "person_name"]:
         semantic_type = semantic_type.map(lambda x: (
             true_type, x[1]) if x[0] == "other" else x)
 
@@ -307,6 +307,6 @@ with open("true_type.csv", 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     column = [[row['file'], row['true_type']] for row in reader]
 
-for item in file_list[0:5]:
+for item in file_list:
     true_type = read_in_true_label(item, column)
     semanticCheck(sc, item, true_type)
