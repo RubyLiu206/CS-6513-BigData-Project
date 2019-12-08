@@ -266,8 +266,10 @@ def semanticCheck(sc, file_name, true_type):
         lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
 
     all_info = []
+    
     semantic_type = data.map(lambda x: (get_semantic_type(
-        x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y)
+        x[0].lower()), int(1)) if len(x)==1 else (get_semantic_type(
+        x[0].lower()),int(x[1]))).reduceByKey(lambda x, y: x+y)
     # [type, count]
     if true_type in ["street_name", "business_name", "person_name"]:
         semantic_type = semantic_type.map(lambda x: (
@@ -287,7 +289,7 @@ def semanticCheck(sc, file_name, true_type):
         all_info) == 1 else all_info[1]["semantic_type"]
     with open(file_name+'_semantic_result.json', 'w') as fp:
         json.dump({"semantic_types": all_info, "true_type": true_type,
-                   "prediction type": prediction_type}, fp)
+                   "prediction_type": prediction_type}, fp)
 
 
 # match with the csv get the true type
