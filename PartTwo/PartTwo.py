@@ -228,7 +228,7 @@ def get_semantic_type(line):
         return "phone_number"
     elif re.match("\(\d+.?\d*, -?\d+.?\d*\)", line) is not None:
         return "lat_lon_cord"
-    elif re.match("r\d[-(0-9a-z)]+", line) is not None:
+    elif re.match("\w\d[-(0-9a-z)]+", line) is not None:
         return "building_classification"
     elif re.match("(?!0{5})(\d{5})(?!-?0{4})(|-\d{4})?", line) is not None:
         return "zip_code"
@@ -282,8 +282,12 @@ def semanticCheck(sc, file_name, true_type):
         semantic_information["count"] = row[1]
         all_info.append(semantic_information)
 
+    all_info.sort(key=lambda x: -x["count"])
+    prediction_type = all_info[0]["semantic_type"] if all_info[0]["semantic_type"] != "other" or len(
+        all_info) == 1 else all_info[1]["semantic_type"]
     with open(file_name+'_semantic_result.json', 'w') as fp:
-        json.dump({"semantic_types": all_info}, fp)
+        json.dump({"semantic_types": all_info, "true_type": true_type,
+                   "prediction type": prediction_type}, fp)
 
 
 # match with the csv get the true type
@@ -303,6 +307,6 @@ with open("true_type.csv", 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     column = [[row['file'], row['true_type']] for row in reader]
 
-for item in file_list:
+for item in file_list[0:5]:
     true_type = read_in_true_label(item, column)
     semanticCheck(sc, item, true_type)
