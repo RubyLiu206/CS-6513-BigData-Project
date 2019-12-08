@@ -1,1 +1,1 @@
-{"semantic_types": [{"semantic_type": "other", "label": "car_make", "count": 4873}, {"semantic_type": "car_make", "count": 2612}, {"semantic_type": "location_type", "count": 2}], "true_type": "car_make", "prediction type": "car_make"}
+{"semantic_types": [{"semantic_type": "other", "label": "car_make", "count": 4873}, {"semantic_type": "car_make", "count": 2612}, {"semantic_type": "location_type", "count": 2}], "true_type": "car_make", "prediction_type": "car_make"}

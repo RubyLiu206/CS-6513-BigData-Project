@@ -1,1 +1,1 @@
-{"semantic_types": [{"semantic_type": "borough", "count": 4604868}, {"semantic_type": "other", "label": "borough", "count": 25299}], "true_type": "borough", "prediction type": "borough"}
+{"semantic_types": [{"semantic_type": "borough", "count": 4604868}, {"semantic_type": "other", "label": "borough", "count": 25299}], "true_type": "borough", "prediction_type": "borough"}

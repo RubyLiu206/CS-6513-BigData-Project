@@ -1,1 +1,1 @@
-{"semantic_types": [{"semantic_type": "city_agency", "count": 7560}], "true_type": "agency_name", "prediction type": "city_agency"}
+{"semantic_types": [{"semantic_type": "city_agency", "count": 7560}], "true_type": "city_agency", "prediction_type": "city_agency"}
