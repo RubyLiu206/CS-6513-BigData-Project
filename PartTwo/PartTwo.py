@@ -47,6 +47,11 @@ subject = ['-', 'english', 'math', 'science', 'social studies', 'algebra',
            'global history 10', 'global history 9', 'living environment',
            'matched sections', 'math a', 'math b', 'other', 'physics', 'us government',
            'us government & economics', 'us history']
+color = ['sliver', 'white', 'black', 'red', 'grey', 'blue', 'brown', 'ivory', 'beige',
+         'gold', 'pink', 'rose', 'orange', 'yellow', 'ivory',
+         'green', 'purple', 'bronze', 'camel',
+         'bk', 'wh', 'rd', 'jade', 'blk', 'tan', 'tornado red', 'silk'
+         'navy', 'ltgy', 'ltg', 'light grey', 'light brown', 'dark red']
 street_name = ['avenue', 'place', 'street', 'st', 'court']
 park_playground = ['park', 'playground', 'recreation center']
 college_name = ['college', 'institution', 'university', 'institute']
@@ -180,6 +185,8 @@ for item in car_make:
     type_dict[item] = "car_make"
 for item in location_type:
     type_dict[item] = "location_type"
+for item in color:
+    type_dict[item] = "color"
 
 
 def levenshtein(seq1, seq2):
@@ -219,7 +226,7 @@ def get_semantic_type(line):
         return "website"
     elif re.match("(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}", line) is not None:
         return "phone_number"
-    elif re.match("\(\d+, \d+\)", line) is not None:
+    elif re.match("\(\d+.?\d*, -?\d+.?\d*\)", line) is not None:
         return "lat_lon_cord"
     elif re.match("r\d[-(0-9a-z)]+", line) is not None:
         return "building_classification"
