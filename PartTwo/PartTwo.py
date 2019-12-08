@@ -1,3 +1,4 @@
+import ast
 from difflib import SequenceMatcher
 import sys
 import numpy as np
@@ -40,7 +41,6 @@ actudally we don't have column with location_type,
 
 
 """
-
 subject = ['-', 'english', 'math', 'science', 'social studies', 'algebra',
            'assumed team teaching', 'chemistry', 'earth science', 'economics',
            'english 10', 'english 11', 'english 12', 'english 9', 'geometry',
@@ -139,8 +139,27 @@ car_make = ['acura', 'alfa romeo', 'am general', 'aston martin', 'audi', 'avanti
             'saturn', 'scion', 'smart', 'spyker', 'sterling', 'subaru', 'suzuki', 'tesla', 'toyota', 'volkswagen', 'volvo', 'yugo',
             'benz', 'mercedes', 'lambo', 'avanti', 'chevy', 'vw']
 
+location_type = ['abandoned building', 'airport terminal', 'atm', 'bank', 'bar/night club',
+                 'beauty & nail salon', 'book/card', 'bridge', 'bus (nyc transit)',
+                 'bus (other)', 'bus stop', 'bus terminal', 'candy store', 'cemetery',
+                 'chain store', 'check cashing business', 'church', 'clothing/boutique',
+                 'commercial building', 'construction site', 'department store', 'doctor/dentist office',
+                 'drug store', 'dry cleaner/laundry', 'factory/warehouse', 'fast food', 'ferry/ferry terminal',
+                 'food supermarket', 'gas station', 'grocery/bodega', 'gym/fitness facility', 'highway/parkway',
+                 'hospital', 'hotel/motel', 'jewelry', 'liquor store', 'loan company', 'mailbox inside',
+                 'mailbox outside', 'marina/pier', 'mosque', 'open areas (open lots)', 'other',
+                 'other house of worship', 'park/playground', 'parking lot/garage (private)',
+                 'parking lot/garage (public)', 'photo/copy', 'private/parochial school', 'public building',
+                 'public school', 'residence - apt. house', 'residence - public housing', 'residence-house',
+                 'restaurant/diner', 'shoe', 'small merchant', 'social club/policy', 'storage facility',
+                 'store unclassified', 'street', 'synagogue', 'taxi (livery licensed)',
+                 'taxi (yellow licensed)', 'taxi/livery (unlicensed)', 'telecomm. store', 'tramway',
+                 'transit - nyc subway', 'transit facility (other)', 'tunnel', 'variety store', 'video store']
 
-type_dict = {}
+
+with open("PartTwo/city.txt", "r") as data:
+    type_dict = ast.literal_eval(data.read())
+    
 for item in subject:
     type_dict[item] = "subject_in_school"
 for item in school_level:
@@ -183,7 +202,6 @@ def levenshtein(seq1, seq2):
                     matrix[x-1, y-1] + 1,
                     matrix[x, y-1] + 1
                 )
-    #print (matrix)
     return (matrix[size_x - 1, size_y - 1])
 
 
