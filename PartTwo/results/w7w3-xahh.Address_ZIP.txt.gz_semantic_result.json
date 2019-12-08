@@ -1,1 +1,1 @@
-{"semantic_types": [{"semantic_type": "other", "label": "zip", "count": 130}, {"semantic_type": "zip_code", "count": 198134}, {"semantic_type": "borough", "count": 1}]}
+{"semantic_types": [{"semantic_type": "zip_code", "count": 198134}, {"semantic_type": "other", "label": "zip_code", "count": 91}, {"semantic_type": "building_classification", "count": 39}, {"semantic_type": "borough", "count": 1}], "true_type": "zip_code", "prediction type": "zip_code"}

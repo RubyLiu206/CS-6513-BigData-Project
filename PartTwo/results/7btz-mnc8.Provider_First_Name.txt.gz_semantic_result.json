@@ -1,1 +1,1 @@
-{"semantic_types": [{"semantic_type": "name", "count": 1926}, {"semantic_type": "car_make", "count": 2}, {"semantic_type": "borough", "count": 1}]}
+{"semantic_types": [{"semantic_type": "person_name", "count": 1926}, {"semantic_type": "car_make", "count": 2}, {"semantic_type": "borough", "count": 1}], "true_type": "person_name", "prediction type": "person_name"}

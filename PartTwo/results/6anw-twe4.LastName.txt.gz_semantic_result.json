@@ -1,1 +1,1 @@
-{"semantic_types": [{"semantic_type": "name", "count": 10096}, {"semantic_type": "car_make", "count": 7}, {"semantic_type": "neighborhood", "count": 1}, {"semantic_type": "park_playground", "count": 9}]}
+{"semantic_types": [{"semantic_type": "person_name", "count": 10048}, {"semantic_type": "color", "count": 48}, {"semantic_type": "park_playground", "count": 9}, {"semantic_type": "car_make", "count": 7}, {"semantic_type": "neighborhood", "count": 1}], "true_type": "person_name", "prediction type": "person_name"}

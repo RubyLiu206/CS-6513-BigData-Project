@@ -1,1 +1,1 @@
-{"semantic_types": [{"semantic_type": "name", "count": 1935}, {"semantic_type": "car_make", "count": 5}]}
+{"semantic_types": [{"semantic_type": "person_name", "count": 1927}, {"semantic_type": "color", "count": 8}, {"semantic_type": "car_make", "count": 5}], "true_type": "person_name", "prediction type": "person_name"}

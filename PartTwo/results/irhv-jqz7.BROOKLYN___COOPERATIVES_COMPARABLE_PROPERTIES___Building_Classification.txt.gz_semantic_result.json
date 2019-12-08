@@ -1,1 +1,1 @@
-{"semantic_types": [{"semantic_type": "other", "label": "neighborhood", "count": 514}]}
+{"semantic_types": [{"semantic_type": "building_classification", "count": 514}], "true_type": "neighborhood", "prediction type": "building_classification"}

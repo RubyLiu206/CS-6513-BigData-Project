@@ -1,1 +1,15 @@
-{"semantic_types": [{"semantic_type": "other", "label": "zip", "count": 25}, {"semantic_type": "zip_code", "count": 44734}]}
+{
+    "semantic_types": [
+        {
+            "semantic_type": "zip_code",
+            "count": 44734
+        },
+        {
+            "semantic_type": "other",
+            "label": "zip_code",
+            "count": 25
+        }
+    ],
+    "true_type": "zip_code",
+    "prediction type": "zip_code"
+}

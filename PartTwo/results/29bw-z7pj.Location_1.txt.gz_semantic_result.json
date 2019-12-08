@@ -1,1 +1,10 @@
-{"semantic_types": [{"semantic_type": "other", "label": "location", "count": 592372}]}
+{
+    "semantic_types": [
+        {
+            "semantic_type": "lat_lon_cord",
+            "count": 592372
+        }
+    ],
+    "true_type": "lat_lon_cord",
+    "prediction type": "lat_lon_cord"
+}
