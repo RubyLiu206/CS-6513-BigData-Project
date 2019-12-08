@@ -162,9 +162,9 @@ location_type = ['abandoned building', 'airport terminal', 'atm', 'bank', 'bar/n
                  'transit - nyc subway', 'transit facility (other)', 'tunnel', 'variety store', 'video store']
 
 
+
 with open("city.txt", "r") as data:
     type_dict = ast.literal_eval(data.read())
-
 for item in subject:
     type_dict[item] = "subject_in_school"
 for item in school_level:
@@ -187,6 +187,7 @@ for item in location_type:
     type_dict[item] = "location_type"
 for item in color:
     type_dict[item] = "color"
+
 
 
 def levenshtein(seq1, seq2):
@@ -236,6 +237,7 @@ def get_semantic_type(line):
     elif type_dict.get(line) is not None:
         return type_dict.get(line)
     # checking with the list, from the smallest one
+
     else:
         for data in park_playground:
             line_split = line.split(" ")
@@ -274,7 +276,9 @@ def semanticCheck(sc, file_name, true_type):
     if true_type in ["street_name", "business_name", "person_name"]:
         semantic_type = semantic_type.map(lambda x: (
             true_type, x[1]) if x[0] == "other" else x)
-
+    if true_type == "address":
+        semantic_type = semantic_type.map(lambda x: (
+            true_type, x[1]) if x[0] == "street_name" else x)
     for row in semantic_type.collect():
         # key is semantic type, value is count
         semantic_information = {}
