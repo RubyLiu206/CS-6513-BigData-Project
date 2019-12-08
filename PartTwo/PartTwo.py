@@ -157,7 +157,7 @@ location_type = ['abandoned building', 'airport terminal', 'atm', 'bank', 'bar/n
                  'transit - nyc subway', 'transit facility (other)', 'tunnel', 'variety store', 'video store']
 
 
-with open("PartTwo/city.txt", "r") as data:
+with open("city.txt", "r") as data:
     type_dict = ast.literal_eval(data.read())
 
 for item in subject:
@@ -260,9 +260,12 @@ def semanticCheck(sc, file_name, true_type):
 
     all_info = []
     semantic_type = data.map(lambda x: (get_semantic_type(
-        x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y).collect()
+        x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y)
+    # [type, count]
+    if true_type in ["street_name", "business_name", "name"]:
+        semantic_type = semantic_type.map(lambda x: (true_type, x[1]) if x[0] == "other" else x)
 
-    for row in semantic_type:
+    for row in semantic_type.collect():
         # key is semantic type, value is count
         semantic_information = {}
         semantic_information["semantic_type"] = row[0]
@@ -277,20 +280,6 @@ def semanticCheck(sc, file_name, true_type):
     # print(semantic_information['semantic_type'])
     # no need to return.
     return semantic_information['semantic_type']
-
-
-def name_Check(sc, file_name, true_type):
-    file_name = file_name.strip()[1:-1]
-    file_path = "/user/hm74/NYCColumns/" + str(file_name)
-    data = sc.textFile(file_path, 1).mapPartitions(
-        lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
-    print("Name")
-    semantic_information = {}
-    semantic_type = data.map(lambda x: ("Name", int(x[1]))).reduceByKey(
-        lambda x, y: x + y).collect()
-    with open(file_name+'_semantic_result.json', 'w') as fp:
-        json.dump({"semantic_types": "Name"}, fp)
-    return "Name"
 
 
 # match with the csv get the true type
@@ -312,7 +301,7 @@ with open("true_type.csv", 'r') as csvfile:
     column = [[row['file'], row['true_type']] for row in reader]
 
 
-for item in file_list[75:85]:
+for item in file_list:
     true_type = read_in_true_label(item, column)
     column_name = item.split(".")
     column_name = column_name[1].split("_")
@@ -324,14 +313,17 @@ for item in file_list[75:85]:
     name = []
     for col in column_name:
         name.append(col.lower())
-    if "name" in test_name:
-        if "street" in test_name:
-            label = semanticCheck(sc, item, true_type)
-        elif "business" in test_name:
-            label = semanticCheck(sc, item, true_type)
+    
+    label = semanticCheck(sc, item, true_type)
 
-        label = name_Check(sc, item, true_type)
-    else:
-        label = semanticCheck(sc, item, true_type)
+    # if "name" in test_name:
+    #     if "street" in test_name:
+    #         label = semanticCheck(sc, item, true_type)
+    #     elif "business" in test_name:
+    #         label = semanticCheck(sc, item, true_type)
+
+        
+    # else:
+    #     label = semanticCheck(sc, item, true_type)
 # for i in range(5):
 #    semanticCheck(sc, file_list[i])label
