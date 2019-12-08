@@ -159,7 +159,7 @@ location_type = ['abandoned building', 'airport terminal', 'atm', 'bank', 'bar/n
 
 with open("PartTwo/city.txt", "r") as data:
     type_dict = ast.literal_eval(data.read())
-    
+
 for item in subject:
     type_dict[item] = "subject_in_school"
 for item in school_level:
@@ -178,6 +178,8 @@ for item in vehicel_type:
     type_dict[item] = "vehicel_type"
 for item in car_make:
     type_dict[item] = "car_make"
+for item in location_type:
+    type_dict[item] = "location_type"
 
 
 def levenshtein(seq1, seq2):
