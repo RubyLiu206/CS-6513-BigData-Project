@@ -48,7 +48,10 @@ subject = ['-', 'english', 'math', 'science', 'social studies', 'algebra',
            'matched sections', 'math a', 'math b', 'other', 'physics', 'us government',
            'us government & economics', 'us history']
 street_name = ['avenue', 'place', 'street', 'st', 'court']
-park_playground = ['park', 'playground']
+park_playground = ['park', 'playground', 'recreation center']
+college_name = ['college', 'institution', 'university', 'institute']
+school_name = ['academy', 'school', 'high school', 'closed school',
+               'campus', 'language', 'learning']
 school_level = ['elementary', 'high school', 'high school transfer', 'k-2',
                 'k-3', 'k-8', 'middle', 'yabc', 'elementary school', 'k-8 school',
                 'middle school', 'transfer school', 'transfer high school', 'd75']
@@ -134,7 +137,8 @@ car_make = ['acura', 'alfa romeo', 'am general', 'aston martin', 'audi', 'avanti
             'maserati', 'maybach', 'mazda', 'mclaren', 'mercedes-benz', 'mercury', 'mini', 'mitsubishi', 'morgan', 'nissan',
             'oldsmobile', 'panoz', 'peugeot', 'plymouth', 'pontiac', 'porsche', 'qvale', 'ram', 'rolls-royce', 'saab', 'saleen',
             'saturn', 'scion', 'smart', 'spyker', 'sterling', 'subaru', 'suzuki', 'tesla', 'toyota', 'volkswagen', 'volvo', 'yugo',
-            'benz', 'mercedes', 'lambo', 'avanti', 'chevy']
+            'benz', 'mercedes', 'lambo', 'avanti', 'chevy', 'vw']
+
 
 type_dict = {}
 for item in subject:
@@ -206,15 +210,25 @@ def get_semantic_type(line):
         return type_dict.get(line)
     # checking with the list, from the smallest one
     else:
-        for data in street_name:
-            line_split = line.split(" ")
-            if data in line_split:
-                return "street_name"
-
         for data in park_playground:
             line_split = line.split(" ")
             if data in line_split:
                 return "park_playground"
+
+        for data in college_name:
+            line_split = line.split(" ")
+            if data in line_split:
+                return "college_name"
+
+        for data in school_name:
+            line_split = line.split(" ")
+            if data in line_split:
+                return "school_name"
+
+        for data in street_name:
+            line_split = line.split(" ")
+            if data in line_split:
+                return "street_name"
     return "other"
 
 
@@ -223,18 +237,25 @@ def semanticCheck(sc, file_name, true_type):
     file_path = "/user/hm74/NYCColumns/" + str(file_name)
     data = sc.textFile(file_path, 1).mapPartitions(
         lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
-    # key is semantic type, value is count
-    semantic_information = {}
+
+    all_info = []
     semantic_type = data.map(lambda x: (get_semantic_type(
         x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y).collect()
+
     for row in semantic_type:
+        # key is semantic type, value is count
+        semantic_information = {}
         semantic_information["semantic_type"] = row[0]
         if (row[0] == "other"):
             semantic_information["label"] = true_type
         semantic_information["count"] = row[1]
+        all_info.append(semantic_information)
+
     with open(file_name+'_semantic_result.json', 'w') as fp:
-        json.dump({"semantic_types": semantic_information}, fp)
-    print(semantic_information['semantic_type'])
+        json.dump({"semantic_types": all_info}, fp)
+
+    # print(semantic_information['semantic_type'])
+    # no need to return.
     return semantic_information['semantic_type']
 
 
@@ -264,13 +285,14 @@ sc = SparkContext()
 
 
 file_list = open('cluster3.txt').readline().strip().replace(' ', '').split(",")
+
 # get the true type csv
 with open("true_type.csv", 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     column = [[row['file'], row['true_type']] for row in reader]
 
 
-for item in file_list[0:10]:
+for item in file_list[75:85]:
     true_type = read_in_true_label(item, column)
     column_name = item.split(".")
     column_name = column_name[1].split("_")
