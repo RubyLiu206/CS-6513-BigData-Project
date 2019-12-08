@@ -14,13 +14,16 @@ column = ['correctly predicted as type', 'total columns of type', 'total columns
 df = pd.DataFrame(index = index, columns = column).fillna(0)
 
 file_list = open('cluster3.txt').readline().strip().replace(' ', '').split(",")
-for name in file_list:
-    file_path = str(file_name)
-    with open(file_path+".json",'r') as load_f:
-        load_dict = json.load(load_f)
-        #print(load_dict)
-        df['total columns of type'][load_dict['true_type']] += 1
-        df['total columns predicted as type'][load_dict['prediction type']] += 1
-        if load_dict['prediction type'] == load_dict['true_type']:
-            df['correctly predicted as type'][load_dict['true_type']] += 1
+for file_name in file_list:
+    file_name = file_name[1:-1]
+    try:
+        with open(file_name+"_semantic_result.json",'r') as load_f:
+            load_dict = json.load(load_f)
+            print(load_dict)
+            df['total columns of type'][load_dict['true_type']] += 1
+            df['total columns predicted as type'][load_dict['prediction type']] += 1
+            if load_dict['prediction type'] == load_dict['true_type']:
+                df['correctly predicted as type'][load_dict['true_type']] += 1
+    except:
+        print(file_name)
 
