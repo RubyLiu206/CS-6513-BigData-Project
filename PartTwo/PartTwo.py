@@ -263,7 +263,8 @@ def semanticCheck(sc, file_name, true_type):
         x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y)
     # [type, count]
     if true_type in ["street_name", "business_name", "name"]:
-        semantic_type = semantic_type.map(lambda x: (true_type, x[1]) if x[0] == "other" else x)
+        semantic_type = semantic_type.map(lambda x: (
+            true_type, x[1]) if x[0] == "other" else x)
 
     for row in semantic_type.collect():
         # key is semantic type, value is count
@@ -277,10 +278,6 @@ def semanticCheck(sc, file_name, true_type):
     with open(file_name+'_semantic_result.json', 'w') as fp:
         json.dump({"semantic_types": all_info}, fp)
 
-    # print(semantic_information['semantic_type'])
-    # no need to return.
-    return semantic_information['semantic_type']
-
 
 # match with the csv get the true type
 def read_in_true_label(name, df):
@@ -292,7 +289,6 @@ def read_in_true_label(name, df):
 
 sc = SparkContext()
 
-
 file_list = open('cluster3.txt').readline().strip().replace(' ', '').split(",")
 
 # get the true type csv
@@ -300,30 +296,6 @@ with open("true_type.csv", 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     column = [[row['file'], row['true_type']] for row in reader]
 
-
 for item in file_list:
     true_type = read_in_true_label(item, column)
-    column_name = item.split(".")
-    column_name = column_name[1].split("_")
-    test_name = []
-    for i in column_name:
-        if not i.isdigit():
-            test_name.append(i)
-    test_name = ''.join(test_name)
-    name = []
-    for col in column_name:
-        name.append(col.lower())
-    
-    label = semanticCheck(sc, item, true_type)
-
-    # if "name" in test_name:
-    #     if "street" in test_name:
-    #         label = semanticCheck(sc, item, true_type)
-    #     elif "business" in test_name:
-    #         label = semanticCheck(sc, item, true_type)
-
-        
-    # else:
-    #     label = semanticCheck(sc, item, true_type)
-# for i in range(5):
-#    semanticCheck(sc, file_list[i])label
+    semanticCheck(sc, item, true_type)
