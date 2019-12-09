@@ -60,7 +60,7 @@ def profile_single_file(sc, file):
         #print("\nCurrent Column: ", header[i])
         # Part one: question 2 --- count the empty column:
         number_empty = lines_mapped.filter(
-            lambda x: x[0] is None or x[0] == 'No Data').count()
+            lambda x: x[0] is None or x[0] == 'No Data' or x[0] == '').count()
         # Part one: question 1 --- count the non empty column:
         number_non_empty = lines_mapped.count() - number_empty
         #print("Number of non-empty cells: ", number_non_empty)
