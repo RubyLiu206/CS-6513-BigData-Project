@@ -29,10 +29,13 @@ def get_file_names(sc, path):
     return file_names
 
 
-def sortDate(date):
+def sortDate(dateTime):
     # rewrite the string to yyyymmdd then let spark sort
-    date = date.split("/")
-    return date[2]+date[0]+date[1]
+    if '/' in dateTime:
+        dateTime = dateTime.split("/")
+        return dateTime[2]+dateTime[0]+dateTime[1]
+    else:
+        return dateTime
 
 
 def profile_single_file(sc, file):
@@ -167,7 +170,7 @@ for i in secondFile.readlines():
     i = path+i.strip()
     file_names.append(i)
 
-for file_name in file_names:
+for file_name in file_names[75:]:
     try:
         profile_single_file(sc, file_name)
     except Exception:
