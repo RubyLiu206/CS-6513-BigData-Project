@@ -83,7 +83,7 @@ def profile_single_file(sc, file):
         # Part one: question 5 --- get the data type
         data_type = []
         column_data_types = lines_without_header.map(
-            lambda x: (data_with_type(x[i]), 1))
+            lambda x: (data_with_type(x[i].strip()), 1))
 
         column_data_if_int = column_data_types.filter(
             lambda x: x[0][1] == "INTEGER (LONG)")
@@ -120,7 +120,7 @@ def profile_single_file(sc, file):
             std = np.std(column_data)
             data_type.append({"type": "REAL", "count": len(column_data), "max_value": float(max_value[0]),
                               "min_value": float(min_value[0]), "mean": mean_value, "stddev": std})
-
+        print(column_data_if_datetime.count())
         if column_data_if_datetime.count() != 0:
             #print("column data has datetime\n")
             column_data = column_data_if_datetime.map(lambda x: x[0][0])
@@ -170,7 +170,7 @@ for i in secondFile.readlines():
     i = path+i.strip()
     file_names.append(i)
 
-for file_name in file_names[75:]:
+for file_name in file_names[0:1]:
     try:
         profile_single_file(sc, file_name)
     except Exception:
