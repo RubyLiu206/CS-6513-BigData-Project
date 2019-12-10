@@ -9,12 +9,14 @@ dateTimeCount = 0
 totalColumnCount = 0
 totalFileCount = 0
 freqSet = {}
+resultDictionary = []
 
 results = os.listdir(path)
 for result in results:
     totalFileCount += 1
     with open(path+result, 'r') as load_f:
         load_dict = json.load(load_f)
+        resultDictionary.append(load_dict)
         for column in load_dict['columns']:
             totalColumnCount += 1
             dataType = column['data_type']
@@ -48,6 +50,8 @@ print("Columns contains INTEGER(LONG) count: ", intCount)
 print("Columns contains DATE/TIME Count: ", dateTimeCount)
 print("Columns contains TEXT Count: ", textCount)
 
+with open('task1.json', 'w') as fp:
+        json.dump(resultDictionary, fp)
 
 '''
     For task1, we used three python scripts to finish the task: One main script
