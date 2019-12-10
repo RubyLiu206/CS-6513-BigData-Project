@@ -11,7 +11,7 @@ def get_type(data):
         return "REAL"
     elif re.match("^\s*-?[0-9]{1,10}\s*$", data) is not None:
         return "INTEGER (LONG)"
-    elif re.match('^(([0-1][0-9])|([2][0-3])):([0-5][0-9]):([0-5][0-9])$', data) is not None or re.match('[0-9]{2}/[0-9]{2}/[0-9]{4}', data) is not None:
+    elif re.match('^(([0-1][0-9])|([2][0-3])):([0-5][0-9])(:([0-5][0-9]))?$', data) is not None or re.match('[0-9]{2}/[0-9]{2}/[0-9]{4}', data) is not None:
         return "DATE/TIME"
     else:
         return "TEXT"
@@ -29,10 +29,13 @@ def get_file_names(sc, path):
     return file_names
 
 
-def sortDate(date):
+def sortDate(dateTime):
     # rewrite the string to yyyymmdd then let spark sort
-    date = date.split("/")
-    return date[2]+date[0]+date[1]
+    if '/' in dateTime:
+        dateTime = dateTime.split("/")
+        return dateTime[2]+dateTime[0]+dateTime[1]
+    else:
+        return dateTime
 
 
 def profile_single_file(sc, file):
@@ -57,7 +60,7 @@ def profile_single_file(sc, file):
         #print("\nCurrent Column: ", header[i])
         # Part one: question 2 --- count the empty column:
         number_empty = lines_mapped.filter(
-            lambda x: x[0] is None or x[0] == 'No Data').count()
+            lambda x: x[0] is None or x[0] == 'No Data' or x[0] == '').count()
         # Part one: question 1 --- count the non empty column:
         number_non_empty = lines_mapped.count() - number_empty
         #print("Number of non-empty cells: ", number_non_empty)
@@ -80,7 +83,7 @@ def profile_single_file(sc, file):
         # Part one: question 5 --- get the data type
         data_type = []
         column_data_types = lines_without_header.map(
-            lambda x: (data_with_type(x[i]), 1))
+            lambda x: (data_with_type(x[i].strip()), 1))
 
         column_data_if_int = column_data_types.filter(
             lambda x: x[0][1] == "INTEGER (LONG)")
