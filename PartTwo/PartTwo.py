@@ -264,6 +264,7 @@ def get_semantic_type(line):
 def semanticCheck(sc, file_name, true_type):
     file_name = file_name.strip()[1:-1]
     file_path = "/user/hm74/NYCColumns/" + str(file_name)
+    column_name = file_name.split('.')[1]
     data = sc.textFile(file_path, 1).mapPartitions(
         lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
 
@@ -292,7 +293,7 @@ def semanticCheck(sc, file_name, true_type):
     prediction_type = all_info[0]["semantic_type"] if all_info[0]["semantic_type"] != "other" or len(
         all_info) == 1 else all_info[1]["semantic_type"]
     with open(file_name+'_semantic_result.json', 'w') as fp:
-        json.dump({"semantic_types": all_info, "true_type": true_type,
+        json.dump({"column name":str(column_name),"semantic_types": all_info, "true_type": true_type,
                    "prediction_type": prediction_type}, fp)
 
 
