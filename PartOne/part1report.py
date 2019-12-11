@@ -50,8 +50,13 @@ print("Columns contains INTEGER(LONG) count: ", intCount)
 print("Columns contains DATE/TIME Count: ", dateTimeCount)
 print("Columns contains TEXT Count: ", textCount)
 
-with open('task1.json', 'w') as fp:
+with open('PartOne/task1.json', 'w') as fp:
         json.dump(resultDictionary, fp)
+
+with open('PartOne/task1.json', 'r') as fp:
+        test = json.load(fp)
+        with open('PartOne/task1test.json', 'w') as fp:
+            json.dump(test[0], fp)
 
 '''
     For task1, we used three python scripts to finish the task: One main script
