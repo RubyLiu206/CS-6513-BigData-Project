@@ -162,7 +162,6 @@ location_type = ['abandoned building', 'airport terminal', 'atm', 'bank', 'bar/n
                  'transit - nyc subway', 'transit facility (other)', 'tunnel', 'variety store', 'video store']
 
 
-
 with open("city.txt", "r") as data:
     type_dict = ast.literal_eval(data.read())
 for item in subject:
@@ -187,7 +186,6 @@ for item in location_type:
     type_dict[item] = "location_type"
 for item in color:
     type_dict[item] = "color"
-
 
 
 def levenshtein(seq1, seq2):
@@ -269,10 +267,10 @@ def semanticCheck(sc, file_name, true_type):
         lambda x: csv.reader(x, delimiter='\t', quotechar='"'))
 
     all_info = []
-    
+
     semantic_type = data.map(lambda x: (get_semantic_type(
-        x[0].lower()), int(1)) if len(x)==1 else (get_semantic_type(
-        x[0].lower()),int(x[1]))).reduceByKey(lambda x, y: x+y)
+        x[0].lower()), int(1)) if len(x) == 1 else (get_semantic_type(
+            x[0].lower()), int(x[1]))).reduceByKey(lambda x, y: x+y)
     # [type, count]
     if true_type in ["street_name", "business_name", "person_name"]:
         semantic_type = semantic_type.map(lambda x: (
@@ -293,7 +291,7 @@ def semanticCheck(sc, file_name, true_type):
     prediction_type = all_info[0]["semantic_type"] if all_info[0]["semantic_type"] != "other" or len(
         all_info) == 1 else all_info[1]["semantic_type"]
     with open(file_name+'_semantic_result.json', 'w') as fp:
-        json.dump({"column name":str(column_name),"semantic_types": all_info, "true_type": true_type,
+        json.dump({"column name": str(file_name[0:-7]), "semantic_types": all_info, "true_type": true_type,
                    "prediction_type": prediction_type}, fp)
 
 
